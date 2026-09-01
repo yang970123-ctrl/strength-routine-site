@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>운동별 칼로리 소모 계산기 - 오늘의 근력루틴</title>
+<meta name="description" content="수영, 농구, 달리기 등 스포츠 활동별 칼로리 소모량을 체중과 시간으로 계산합니다.">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="css/style.css">
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8486360926248718" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+
+  <h1 style="margin-top:0;">운동별 칼로리 소모 계산기</h1>
+  <p style="color:var(--text-dim); margin-top:-8px; font-size:14px;">수영, 농구 등 스포츠 활동 기준 (MET 방식)</p>
+
+  <div class="card">
+    <label for="sport">운동 종류</label>
+    <select id="sport">
+      <option value='3.5'>걷기 (보통 속도)</option><option value='8.3'>달리기 (8km/h)</option><option value='9.8'>달리기 (10km/h)</option><option value='8.3'>수영 (자유형, 보통)</option><option value='5.8'>수영 (여유롭게)</option><option value='8.0'>농구 (경기)</option><option value='7.0'>축구 (경기)</option><option value='6.8'>자전거 타기 (보통)</option><option value='6.0'>등산</option><option value='10.0'>줄넘기</option><option value='5.5'>배드민턴</option><option value='6.0'>테니스 (복식)</option><option value='2.5'>요가</option><option value='8.8'>계단 오르기</option><option value='7.5'>클라이밍 (실내)</option><option value='9.0'>복싱 (스파링)</option><option value='7.3'>스쿼시</option><option value='7.0'>인라인스케이트</option><option value='4.8'>골프 (걸어서)</option>
+    </select>
+    <div class="grid-2">
+      <div>
+        <label for="sw">체중 (kg)</label>
+        <input type="number" id="sw" inputmode="decimal" placeholder="예: 70">
+      </div>
+      <div>
+        <label for="sm">운동 시간 (분)</label>
+        <input type="number" id="sm" inputmode="numeric" placeholder="예: 30">
+      </div>
+    </div>
+    <button class="btn" onclick="calcSportsCalorie()">계산하기</button>
+
+    <div class="result-box" id="sportsResult" style="display:none;">
+      <div class="stat-value" id="sportsKcal">-</div>
+      <div class="stat-label">예상 소모 칼로리 (kcal)</div>
+    </div>
+  </div>
+
+  <script>
+  function calcSportsCalorie() {
+    const met = parseFloat(document.getElementById('sport').value);
+    const w = parseFloat(document.getElementById('sw').value);
+    const min = parseFloat(document.getElementById('sm').value);
+    if (!w || !min) { alert('체중과 운동 시간을 입력해주세요.'); return; }
+    const kcal = met * w * (min / 60) * 1.05;
+    document.getElementById('sportsKcal').textContent = kcal.toFixed(0);
+    document.getElementById('sportsResult').style.display = 'block';
+  }
+  </script>
+
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+    style="display:block; width:100%;"
+    data-ad-client="ca-pub-8486360926248718"
+    data-ad-slot="0000000000"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+</div>
+</div>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<script src="js/common.js"></script>
+<script>renderChrome('');</script>
+</body>
+</html>
