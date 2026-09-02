@@ -30,6 +30,9 @@ body {
 h1, h2, h3, .brand {
   font-family: 'Black Han Sans', 'Noto Sans KR', sans-serif;
   letter-spacing: 0.5px;
+  font-weight: 400;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 .mono, input[type="number"], .stat-value {
