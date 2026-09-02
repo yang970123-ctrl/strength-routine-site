@@ -479,8 +479,42 @@ EXERCISES = [
     },
 ]
 
+# ---------------------------------------------------------------------------
+# 랜덤 루틴 생성기용 메타데이터
+# muscle_group: 하체 / 가슴 / 등 / 어깨 / 팔 / 코어 / 전신
+# sets/reps: 생성 시 무작위로 뽑힐 범위
+# bw_mult: {난이도: 체중 대비 권장 중량 배수} - 기구운동에만 존재 (참고용 추정치)
+# ---------------------------------------------------------------------------
+GENERATOR_META = {
+    "pushup":            {"muscle_group": "가슴", "sets": [3, 4], "reps": [10, 20]},
+    "pullup":            {"muscle_group": "등",   "sets": [3, 4], "reps": [5, 12]},
+    "bodyweight-squat":  {"muscle_group": "하체", "sets": [3, 4], "reps": [15, 25]},
+    "plank":             {"muscle_group": "코어", "sets": [3, 4], "reps": [30, 60], "unit": "초"},
+    "burpee":            {"muscle_group": "전신", "sets": [3, 4], "reps": [10, 20]},
+    "lunge":             {"muscle_group": "하체", "sets": [3, 4], "reps": [10, 16]},
+    "mountain-climber":  {"muscle_group": "코어", "sets": [3, 4], "reps": [20, 40]},
+    "crunch":            {"muscle_group": "코어", "sets": [3, 4], "reps": [15, 25]},
+    "bench-press":       {"muscle_group": "가슴", "sets": [3, 5], "reps": [6, 10],
+                           "bw_mult": {"초급": 0.4, "중급": 0.65, "고급": 0.9}},
+    "squat":             {"muscle_group": "하체", "sets": [3, 5], "reps": [5, 8],
+                           "bw_mult": {"초급": 0.6, "중급": 0.95, "고급": 1.35}},
+    "deadlift":          {"muscle_group": "하체", "sets": [3, 5], "reps": [4, 6],
+                           "bw_mult": {"초급": 0.7, "중급": 1.05, "고급": 1.5}},
+    "overhead-press":    {"muscle_group": "어깨", "sets": [3, 4], "reps": [6, 10],
+                           "bw_mult": {"초급": 0.25, "중급": 0.4, "고급": 0.55}},
+    "lat-pulldown":      {"muscle_group": "등",   "sets": [3, 4], "reps": [8, 12],
+                           "bw_mult": {"초급": 0.35, "중급": 0.55, "고급": 0.75}},
+    "leg-press":         {"muscle_group": "하체", "sets": [3, 4], "reps": [10, 15],
+                           "bw_mult": {"초급": 0.8, "중급": 1.3, "고급": 1.8}},
+    "barbell-row":       {"muscle_group": "등",   "sets": [3, 4], "reps": [8, 12],
+                           "bw_mult": {"초급": 0.35, "중급": 0.55, "고급": 0.75}},
+    "dumbbell-curl":     {"muscle_group": "팔",   "sets": [3, 4], "reps": [10, 15],
+                           "bw_mult": {"초급": 0.08, "중급": 0.12, "고급": 0.18}},
+}
+MUSCLE_GROUPS = ["하체", "가슴", "등", "어깨", "팔", "코어", "전신"]
 
-def page_shell(title, description, active_nav, body_html, extra_head=""):
+
+def page_shell(title, description, active_nav, body_html, extra_head="", base_path="../"):
     return f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -488,8 +522,8 @@ def page_shell(title, description, active_nav, body_html, extra_head=""):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 <meta name="description" content="{description}">
-<link rel="manifest" href="../manifest.json">
-<link rel="stylesheet" href="../css/style.css">
+<link rel="manifest" href="{base_path}manifest.json">
+<link rel="stylesheet" href="{base_path}css/style.css">
 {extra_head}
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8486360926248718" crossorigin="anonymous"></script>
 </head>
@@ -506,8 +540,8 @@ def page_shell(title, description, active_nav, body_html, extra_head=""):
 </div>
 </div>
 <script>(adsbygoogle = window.adsbygoogle || []).push({{}});</script>
-<script src="../js/common.js"></script>
-<script>renderChrome('{active_nav}');</script>
+<script src="{base_path}js/common.js"></script>
+<script>renderChrome('{active_nav}', '{base_path}');</script>
 </body>
 </html>
 """
@@ -518,7 +552,7 @@ def build_exercise_page(ex):
     tips_html = "".join(f"<li>{t}</li>" for t in ex["tips"])
     body = f"""
   <p style="font-size:13px; color:var(--text-dim); margin-bottom:4px;">
-    <a href="{ex['category']}.html">{CATEGORY_LABEL[ex['category']]}</a> &gt; {ex['name']}
+    <a href="../{ex['category']}.html">{CATEGORY_LABEL[ex['category']]}</a> &gt; {ex['name']}
   </p>
   <h1 style="margin-top:0;">{ex['name']}</h1>
   <p style="color:var(--text-dim); margin-top:-8px; font-size:14px;">{ex['desc']}</p>
@@ -555,6 +589,7 @@ def build_exercise_page(ex):
         description=f"{ex['name']} 동작 방법, 타겟 부위, 주의사항을 확인하세요.",
         active_nav="",
         body_html=body,
+        base_path="../",
     )
     with open(os.path.join(EXERCISES_DIR, f"{ex['id']}.html"), "w", encoding="utf-8") as f:
         f.write(html)
@@ -584,9 +619,8 @@ def build_category_page(category):
         description=f"{label} 종류별 동작 방법과 주의사항을 확인하세요.",
         active_nav=category,
         body_html=body,
-    ).replace('href="../manifest.json"', 'href="manifest.json"') \
-     .replace('href="../css/style.css"', 'href="css/style.css"') \
-     .replace('src="../js/common.js"', 'src="js/common.js"')
+        base_path="",
+    )
     with open(os.path.join(SITE_ROOT, f"{category}.html"), "w", encoding="utf-8") as f:
         f.write(html)
 
@@ -611,9 +645,8 @@ def build_food_page():
         description="밥, 계란, 닭가슴살 등 음식별 대략적인 칼로리를 확인하세요.",
         active_nav="",
         body_html=body,
-    ).replace('href="../manifest.json"', 'href="manifest.json"') \
-     .replace('href="../css/style.css"', 'href="css/style.css"') \
-     .replace('src="../js/common.js"', 'src="js/common.js"')
+        base_path="",
+    )
     with open(os.path.join(SITE_ROOT, "food-calories.html"), "w", encoding="utf-8") as f:
         f.write(html)
 
@@ -664,10 +697,167 @@ def build_sports_page():
         description="수영, 농구, 달리기 등 스포츠 활동별 칼로리 소모량을 체중과 시간으로 계산합니다.",
         active_nav="",
         body_html=body,
-    ).replace('href="../manifest.json"', 'href="manifest.json"') \
-     .replace('href="../css/style.css"', 'href="css/style.css"') \
-     .replace('src="../js/common.js"', 'src="js/common.js"')
+        base_path="",
+    )
     with open(os.path.join(SITE_ROOT, "sports-calories.html"), "w", encoding="utf-8") as f:
+        f.write(html)
+
+
+def build_generator_page():
+    import json
+
+    pool = []
+    for ex in EXERCISES:
+        meta = GENERATOR_META.get(ex["id"])
+        if not meta:
+            continue
+        pool.append({
+            "id": ex["id"],
+            "name": ex["name"],
+            "category": ex["category"],
+            "muscle_group": meta["muscle_group"],
+            "sets": meta["sets"],
+            "reps": meta["reps"],
+            "unit": meta.get("unit", "회"),
+            "bw_mult": meta.get("bw_mult"),
+        })
+    pool_json = json.dumps(pool, ensure_ascii=False)
+    groups_json = json.dumps(MUSCLE_GROUPS, ensure_ascii=False)
+
+    group_buttons = "".join(
+        f'<button type="button" class="group-btn" data-group="{g}">{g}</button>'
+        for g in MUSCLE_GROUPS
+    )
+
+    body = f"""
+  <h1 style="margin-top:8px;">오늘 뭐하지? 랜덤 루틴</h1>
+  <p style="color:var(--text-dim); margin-top:-8px; font-size:14px;">부위와 체중만 넣으면 오늘 할 운동을 바로 만들어드려요.</p>
+
+  <div class="card">
+    <label>부위 선택 (중복 가능)</label>
+    <div id="groupButtons" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
+      {group_buttons}
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <label for="genWeight">체중 (kg)</label>
+        <input type="number" id="genWeight" inputmode="decimal" placeholder="예: 70">
+      </div>
+      <div>
+        <label for="genLevel">난이도</label>
+        <select id="genLevel">
+          <option value="초급">초급</option>
+          <option value="중급" selected>중급</option>
+          <option value="고급">고급</option>
+        </select>
+      </div>
+    </div>
+
+    <label for="genCount">운동 개수</label>
+    <select id="genCount">
+      <option value="3">3개</option>
+      <option value="4" selected>4개</option>
+      <option value="5">5개</option>
+    </select>
+
+    <button class="btn" onclick="generateRoutine()">루틴 생성하기</button>
+  </div>
+
+  <div id="genResultWrap" style="display:none;">
+    <div class="card" id="genResult"></div>
+    <button class="btn secondary" onclick="generateRoutine(true)">다시 뽑기 (같은 조건)</button>
+  </div>
+
+  <script>
+  const EXERCISE_POOL = {pool_json};
+
+  function pickRandom(arr, n) {{
+    const copy = [...arr];
+    const picked = [];
+    while (picked.length < n && copy.length > 0) {{
+      const idx = Math.floor(Math.random() * copy.length);
+      picked.push(copy.splice(idx, 1)[0]);
+    }}
+    return picked;
+  }}
+
+  function randInRange([min, max]) {{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }}
+
+  document.addEventListener('DOMContentLoaded', () => {{
+    document.querySelectorAll('.group-btn').forEach(btn => {{
+      btn.addEventListener('click', () => btn.classList.toggle('active'));
+    }});
+  }});
+
+  function generateRoutine() {{
+    const selected = [...document.querySelectorAll('.group-btn.active')].map(b => b.dataset.group);
+    const weight = parseFloat(document.getElementById('genWeight').value);
+    const level = document.getElementById('genLevel').value;
+    const count = parseInt(document.getElementById('genCount').value);
+
+    if (selected.length === 0) {{ alert('부위를 최소 1개 이상 선택해주세요.'); return; }}
+    if (!weight) {{ alert('체중을 입력해주세요.'); return; }}
+
+    let candidates = EXERCISE_POOL.filter(e => selected.includes(e.muscle_group));
+    if (candidates.length === 0) {{ alert('선택한 부위에 해당하는 운동이 아직 없어요.'); return; }}
+
+    const picked = pickRandom(candidates, Math.min(count, candidates.length));
+
+    let html = '<h3 style="margin-top:0;">오늘의 루틴</h3>';
+    picked.forEach(ex => {{
+      const sets = randInRange(ex.sets);
+      const reps = randInRange(ex.reps);
+      let weightLine = '';
+      if (ex.bw_mult) {{
+        const mult = ex.bw_mult[level];
+        let suggested = weight * mult;
+        suggested = Math.round(suggested / 2.5) * 2.5;
+        weightLine = `<div style="color:var(--accent-2); font-size:14px; margin-top:2px;">추천 중량 약 ${{suggested}}kg (체중 대비 추정치)</div>`;
+      }}
+      html += `
+        <div class="log-entry" style="display:block;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <a href="exercises/${{ex.id}}.html" style="font-weight:700; font-size:15px;">${{ex.name}}</a>
+            <span style="font-size:12px; color:var(--text-dim);">${{ex.muscle_group}}</span>
+          </div>
+          <div style="color:var(--text-dim); font-size:14px; margin-top:4px;">${{sets}}세트 x ${{reps}}${{ex.unit}}</div>
+          ${{weightLine}}
+        </div>`;
+    }});
+
+    document.getElementById('genResult').innerHTML = html;
+    document.getElementById('genResultWrap').style.display = 'block';
+  }}
+  </script>
+
+  <style>
+  .group-btn {{
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+  }}
+  .group-btn.active {{
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }}
+  </style>
+"""
+    html = page_shell(
+        title="랜덤 루틴 생성기 - 오늘의 근력루틴",
+        description="부위와 체중만 입력하면 오늘 할 운동과 추천 중량을 랜덤으로 만들어줍니다.",
+        active_nav="home",
+        body_html=body,
+        base_path="",
+    )
+    with open(os.path.join(SITE_ROOT, "generator.html"), "w", encoding="utf-8") as f:
         f.write(html)
 
 
@@ -706,6 +896,7 @@ def build_split_page(split_id, split):
         description=f"{split['label']} 루틴 구성과 운동별 세트·반복수를 확인하세요.",
         active_nav="",
         body_html=body,
+        base_path="../",
     )
     with open(os.path.join(SITE_ROOT, "splits", f"{split_id}.html"), "w", encoding="utf-8") as f:
         f.write(html)
@@ -720,6 +911,7 @@ def main():
         build_category_page(cat)
     build_food_page()
     build_sports_page()
+    build_generator_page()
     for split_id, split in SPLITS.items():
         build_split_page(split_id, split)
     print(f"생성 완료: 운동 {len(EXERCISES)}개, 카테고리 {len(CATEGORY_LABEL)}개, "

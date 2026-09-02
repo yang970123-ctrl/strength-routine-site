@@ -1,17 +1,19 @@
 // 공통 하단 네비게이션 & 헤더 렌더링
-function renderChrome(activePage) {
+// basePath: 하위 폴더에서 호출할 때 상위 경로 접두사 (예: '../')
+function renderChrome(activePage, basePath) {
+  basePath = basePath || '';
   const nav = [
-    { id: 'home', label: '홈', icon: '🏠', href: 'index.html' },
-    { id: 'onerm', label: '1RM계산', icon: '🏋️', href: '1rm-calculator.html' },
-    { id: 'standard', label: '강도표준', icon: '📊', href: 'strength-standards.html' },
-    { id: 'log', label: '운동기록', icon: '📝', href: 'workout-log.html' },
+    { id: 'home', label: '홈', icon: '🏠', href: basePath + 'index.html' },
+    { id: 'onerm', label: '1RM계산', icon: '🏋️', href: basePath + '1rm-calculator.html' },
+    { id: 'standard', label: '강도표준', icon: '📊', href: basePath + 'strength-standards.html' },
+    { id: 'log', label: '운동기록', icon: '📝', href: basePath + 'workout-log.html' },
   ];
 
   const header = document.createElement('header');
   header.className = 'top';
   header.innerHTML = `
     <div class="container">
-      <a href="index.html" class="brand">오늘의 <span>근력루틴</span></a>
+      <a href="${basePath}index.html" class="brand">오늘의 <span>근력루틴</span></a>
     </div>`;
   document.body.prepend(header);
 
