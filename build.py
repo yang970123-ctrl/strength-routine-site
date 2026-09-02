@@ -200,6 +200,15 @@ SPLITS = {
 }
 
 # ---------------------------------------------------------------------------
+# 운동별 유튜브 튜토리얼 영상 - YouTube 영상 ID만 넣으면 해당 운동 페이지에
+# 자동으로 임베드됩니다. 아직 촬영 안 한 운동은 그냥 비워두면 됩니다 (텍스트 가이드만 표시).
+# 예: "pushup": "dQw4w9WgXcQ"  (영상 URL의 v= 뒤 11자리 코드)
+# ---------------------------------------------------------------------------
+VIDEOS = {
+    # "pushup": "여기에_유튜브_영상ID",
+}
+
+# ---------------------------------------------------------------------------
 # 운동 데이터 : 이 리스트만 채우면 상세 페이지 + 카테고리 목록이 자동 생성됨
 # ---------------------------------------------------------------------------
 EXERCISES = [
@@ -477,41 +486,806 @@ EXERCISES = [
             "허리는 바닥에서 크게 뜨지 않게 유지한다.",
         ],
     },
+    {
+        "id": "dips",
+        "name": "딥스",
+        "category": "bodyweight",
+        "target": "삼두, 가슴 하부, 어깨",
+        "difficulty": "중급",
+        "desc": "평행봉이나 벤치에서 체중을 이용해 삼두와 가슴 하부를 강하게 자극하는 운동입니다.",
+        "steps": [
+            "평행봉을 잡고 팔을 펴서 몸을 지탱한다.",
+            "팔꿈치를 굽혀 상체를 아래로 내린다.",
+            "삼두와 가슴 힘으로 밀어 올려 시작 자세로 돌아온다.",
+        ],
+        "tips": [
+            "어깨에 통증이 있다면 내려가는 깊이를 줄인다.",
+            "상체를 살짝 앞으로 숙이면 가슴에 더 자극이 간다.",
+        ],
+    },
+    {
+        "id": "jumping-jack",
+        "name": "점핑잭",
+        "category": "bodyweight",
+        "target": "전신, 심폐지구력",
+        "difficulty": "초급",
+        "desc": "가볍게 전신을 깨우고 심박수를 올리는 워밍업 겸 전신 운동입니다.",
+        "steps": [
+            "차렷 자세로 선다.",
+            "점프하며 다리를 벌리고 팔을 머리 위로 든다.",
+            "다시 점프하며 시작 자세로 돌아온다.",
+        ],
+        "tips": [
+            "착지할 때 무릎을 살짝 굽혀 충격을 흡수한다.",
+            "리듬감 있게 일정한 속도로 반복한다.",
+        ],
+    },
+    # ---- 추가: 어깨 · 팔 · 전신 (기구) ----
+    {
+        "id": "lateral-raise",
+        "name": "사이드 레터럴 레이즈",
+        "category": "equipment",
+        "target": "어깨 (측면삼각근)",
+        "difficulty": "초급",
+        "desc": "덤벨을 옆으로 들어올려 어깨 측면(둥근 어깨 라인)을 발달시키는 고립 운동입니다.",
+        "steps": [
+            "덤벨을 양손에 들고 팔을 자연스럽게 내린다.",
+            "팔꿈치를 살짝 굽힌 채 옆으로 어깨 높이까지 들어올린다.",
+            "천천히 시작 자세로 내린다.",
+        ],
+        "tips": [
+            "반동 없이 어깨 힘으로만 천천히 들어올린다.",
+            "너무 무거운 중량보다 정확한 자세와 각도를 우선한다.",
+        ],
+    },
+    {
+        "id": "face-pull",
+        "name": "페이스풀",
+        "category": "equipment",
+        "target": "어깨 (후면삼각근), 승모근",
+        "difficulty": "중급",
+        "desc": "케이블을 얼굴 쪽으로 당겨 어깨 후면과 자세 교정에 좋은 운동입니다.",
+        "steps": [
+            "케이블 머신에 로프 어태치먼트를 얼굴 높이로 설치한다.",
+            "로프를 양손으로 잡고 얼굴 쪽으로 당긴다.",
+            "팔꿈치를 높게 유지하며 천천히 되돌아온다.",
+        ],
+        "tips": [
+            "어깨가 으쓱 올라가지 않도록 주의한다.",
+            "가벼운 중량으로 자세와 수축감에 집중한다.",
+        ],
+    },
+    {
+        "id": "tricep-pushdown",
+        "name": "케이블 트라이셉스 푸시다운",
+        "category": "equipment",
+        "target": "삼두근",
+        "difficulty": "초급",
+        "desc": "케이블 머신으로 삼두근을 고립시켜 팔 뒷면을 발달시키는 운동입니다.",
+        "steps": [
+            "케이블 머신 바를 상단에 걸고 팔꿈치를 몸통에 고정한다.",
+            "팔꿈치를 편 채로 바를 아래로 밀어낸다.",
+            "천천히 시작 위치로 돌아온다.",
+        ],
+        "tips": [
+            "팔꿈치가 앞뒤로 움직이지 않도록 고정한다.",
+            "손목이 꺾이지 않게 중립을 유지한다.",
+        ],
+    },
+    {
+        "id": "hammer-curl",
+        "name": "해머컬",
+        "category": "equipment",
+        "target": "이두근, 전완근",
+        "difficulty": "초급",
+        "desc": "덤벨을 망치 쥐듯 잡고 컬 동작을 수행해 이두와 전완을 함께 자극하는 운동입니다.",
+        "steps": [
+            "덤벨을 손바닥이 몸을 향하도록 잡는다.",
+            "팔꿈치를 고정한 채 덤벨을 어깨 방향으로 들어올린다.",
+            "천천히 시작 자세로 내린다.",
+        ],
+        "tips": [
+            "손목 각도를 유지한 채 반동 없이 든다.",
+            "일반 덤벨컬과 번갈아 구성하면 팔 전체를 고르게 발달시킬 수 있다.",
+        ],
+    },
+    {
+        "id": "kettlebell-swing",
+        "name": "케틀벨 스윙",
+        "category": "equipment",
+        "target": "둔근, 햄스트링, 코어, 심폐지구력",
+        "difficulty": "중급",
+        "desc": "케틀벨을 이용해 힙 힌지 동작으로 전신 파워와 심폐지구력을 함께 키우는 운동입니다.",
+        "steps": [
+            "케틀벨을 양손으로 잡고 다리 사이에서 스윙을 시작한다.",
+            "엉덩이를 뒤로 빼며 케틀벨을 뒤로 보낸 뒤, 엉덩이를 강하게 펴며 앞으로 스윙한다.",
+            "케틀벨이 가슴 높이까지 올라가도록 반복한다.",
+        ],
+        "tips": [
+            "팔의 힘이 아닌 엉덩이(힙 힌지) 힘으로 스윙한다.",
+            "허리가 과도하게 굽지 않도록 코어에 힘을 유지한다.",
+        ],
+    },
+    {
+        "id": "thruster",
+        "name": "스러스터",
+        "category": "equipment",
+        "target": "전신 (하체, 어깨, 코어)",
+        "difficulty": "고급",
+        "desc": "프론트 스쿼트와 오버헤드프레스를 결합한 전신 복합 운동입니다.",
+        "steps": [
+            "바벨을 쇄골 앞에 걸치고 스쿼트 자세로 앉는다.",
+            "일어서는 힘을 그대로 이용해 바벨을 머리 위로 밀어 올린다.",
+            "바벨을 다시 어깨로 내리며 다음 스쿼트를 준비한다.",
+        ],
+        "tips": [
+            "가벼운 중량으로 스쿼트와 프레스 연결 동작부터 익힌다.",
+            "체력 소모가 크므로 세트 사이 충분히 휴식한다.",
+        ],
+    },
+    # ---- 추가: 가슴 · 등 ----
+    {
+        "id": "incline-bench-press",
+        "name": "인클라인 벤치프레스",
+        "category": "equipment",
+        "target": "가슴 상부, 어깨, 삼두",
+        "difficulty": "중급",
+        "desc": "벤치를 비스듬히 세워 가슴 상부를 집중적으로 발달시키는 운동입니다.",
+        "steps": [
+            "벤치를 30~45도로 세우고 눕는다.",
+            "바를 가슴 상부 위로 내렸다가 밀어 올린다.",
+            "팔이 완전히 펴지기 직전까지 반복한다.",
+        ],
+        "tips": [
+            "각도가 너무 높으면 어깨 위주로 자극이 쏠리니 30~45도를 권장한다.",
+            "견갑골을 모은 상태를 끝까지 유지한다.",
+        ],
+    },
+    {
+        "id": "dumbbell-fly",
+        "name": "덤벨 플라이",
+        "category": "equipment",
+        "target": "가슴 (전체, 특히 바깥쪽)",
+        "difficulty": "초급",
+        "desc": "팔을 편 채로 덤벨을 벌렸다 모으며 가슴을 넓게 늘려주는 고립 운동입니다.",
+        "steps": [
+            "벤치에 누워 덤벨을 가슴 위로 들어올린다.",
+            "팔꿈치를 살짝 굽힌 채 양옆으로 크게 벌린다.",
+            "가슴의 힘으로 다시 처음 위치로 모은다.",
+        ],
+        "tips": [
+            "팔꿈치를 너무 곧게 펴면 팔꿈치 관절에 부담이 갈 수 있다.",
+            "무거운 중량보다 가동범위와 수축감에 집중한다.",
+        ],
+    },
+    {
+        "id": "cable-crossover",
+        "name": "케이블 크로스오버",
+        "category": "equipment",
+        "target": "가슴 (안쪽 포함)",
+        "difficulty": "중급",
+        "desc": "케이블의 지속적인 장력으로 가슴 안쪽까지 자극하는 마무리 운동으로 자주 활용됩니다.",
+        "steps": [
+            "케이블 머신 양쪽 손잡이를 잡고 가운데 선다.",
+            "팔을 살짝 굽힌 채 앞으로 모으듯 당긴다.",
+            "천천히 시작 자세로 되돌아온다.",
+        ],
+        "tips": [
+            "가슴 근육이 수축하는 지점에서 잠시 멈추면 효과가 좋다.",
+            "상체가 앞뒤로 흔들리지 않도록 코어를 고정한다.",
+        ],
+    },
+    {
+        "id": "seated-cable-row",
+        "name": "시티드 케이블 로우",
+        "category": "equipment",
+        "target": "광배근, 승모근, 이두",
+        "difficulty": "초급",
+        "desc": "케이블 머신에 앉아 등 중앙과 두께를 발달시키는 대표적인 등 운동입니다.",
+        "steps": [
+            "머신에 앉아 발판에 발을 고정하고 손잡이를 잡는다.",
+            "상체를 곧게 세운 채 손잡이를 배꼽 방향으로 당긴다.",
+            "견갑골을 모았다가 천천히 팔을 편다.",
+        ],
+        "tips": [
+            "상체를 과도하게 앞뒤로 흔들지 않는다.",
+            "당길 때 가슴을 펴고 견갑골을 확실히 모은다.",
+        ],
+    },
+    {
+        "id": "one-arm-dumbbell-row",
+        "name": "원암 덤벨로우",
+        "category": "equipment",
+        "target": "광배근, 승모근",
+        "difficulty": "초급",
+        "desc": "한쪽씩 집중해서 당기며 좌우 불균형을 교정하기 좋은 등 운동입니다.",
+        "steps": [
+            "한 손과 무릎을 벤치에 올려 상체를 숙인다.",
+            "반대손으로 덤벨을 들고 옆구리 방향으로 당긴다.",
+            "천천히 팔을 펴며 시작 자세로 돌아온다.",
+        ],
+        "tips": [
+            "상체가 회전하지 않도록 고정한다.",
+            "팔꿈치가 몸통을 스치듯 당긴다.",
+        ],
+    },
+    {
+        "id": "back-extension",
+        "name": "백 익스텐션",
+        "category": "bodyweight",
+        "target": "척추기립근, 둔근, 햄스트링",
+        "difficulty": "초급",
+        "desc": "허리와 등 하부의 지구력을 강화하는 운동으로, 데드리프트 보조 운동으로도 좋습니다.",
+        "steps": [
+            "백 익스텐션 벤치(또는 바닥)에 엎드려 상체를 아래로 늘어뜨린다.",
+            "허리와 둔근의 힘으로 상체를 들어올려 일직선을 만든다.",
+            "천천히 시작 자세로 내려온다.",
+        ],
+        "tips": [
+            "허리를 과도하게 꺾을 정도로 들어올리지 않는다.",
+            "둔근에 힘을 주는 느낌으로 수행하면 허리 부담이 줄어든다.",
+        ],
+    },
+    # ---- 추가: 홈트레이닝에서 특히 많이 하는 맨몸운동 ----
+    {
+        "id": "diamond-pushup",
+        "name": "다이아몬드 푸시업",
+        "category": "bodyweight",
+        "target": "삼두근, 가슴 안쪽",
+        "difficulty": "중급",
+        "desc": "양손을 가운데로 모아 다이아몬드 모양을 만들어 삼두근에 더 강하게 집중하는 푸시업 변형입니다.",
+        "steps": [
+            "엎드려서 양손 엄지와 검지로 다이아몬드 모양을 만든다.",
+            "가슴이 손 위로 오도록 상체를 내린다.",
+            "삼두와 가슴 힘으로 밀어 올린다.",
+        ],
+        "tips": [
+            "손목에 부담이 크므로 워밍업을 충분히 한다.",
+            "일반 푸시업보다 어려우니 무릎을 대고 시작해도 좋다.",
+        ],
+    },
+    {
+        "id": "incline-pushup",
+        "name": "인클라인 푸시업",
+        "category": "bodyweight",
+        "target": "가슴 하부, 삼두",
+        "difficulty": "초급",
+        "desc": "손을 의자나 벤치 등 높은 곳에 짚어 난이도를 낮춘 입문용 푸시업입니다.",
+        "steps": [
+            "의자나 낮은 테이블에 양손을 어깨너비로 짚는다.",
+            "몸을 일직선으로 유지하며 가슴을 향해 내린다.",
+            "가슴 힘으로 밀어 올려 시작 자세로 돌아온다.",
+        ],
+        "tips": [
+            "일반 푸시업이 아직 어려운 초보자에게 좋은 시작점이다.",
+            "받침대가 낮을수록 난이도가 올라간다.",
+        ],
+    },
+    {
+        "id": "decline-pushup",
+        "name": "디클라인 푸시업",
+        "category": "bodyweight",
+        "target": "가슴 상부, 어깨, 삼두",
+        "difficulty": "중급",
+        "desc": "발을 높은 곳에 올려 가슴 상부와 어깨에 더 강한 자극을 주는 푸시업 변형입니다.",
+        "steps": [
+            "발을 의자 위에 올리고 양손은 바닥에 어깨너비로 짚는다.",
+            "몸을 일직선으로 유지하며 가슴을 바닥 가까이 내린다.",
+            "가슴과 어깨 힘으로 밀어 올린다.",
+        ],
+        "tips": [
+            "일반 푸시업보다 난이도가 높으니 코어를 단단히 잡는다.",
+            "어깨나 허리가 처지지 않도록 주의한다.",
+        ],
+    },
+    {
+        "id": "pike-pushup",
+        "name": "파이크 푸시업",
+        "category": "bodyweight",
+        "target": "어깨 (전면·측면 삼각근)",
+        "difficulty": "중급",
+        "desc": "엉덩이를 높이 든 자세로 진행해 오버헤드프레스와 비슷한 효과를 주는 어깨 맨몸운동입니다.",
+        "steps": [
+            "엎드려 뻗친 자세에서 엉덩이를 높게 들어 역V자 모양을 만든다.",
+            "팔꿈치를 굽혀 정수리가 바닥에 가까워지도록 내린다.",
+            "어깨 힘으로 밀어 올려 시작 자세로 돌아온다.",
+        ],
+        "tips": [
+            "발을 높은 곳에 올리면 난이도가 더 올라간다 (파이크 → 핸드스탠드 푸시업으로 발전 가능).",
+            "목에 체중이 실리지 않도록 정수리는 살짝 스치는 정도만 내린다.",
+        ],
+    },
+    {
+        "id": "chair-dip",
+        "name": "체어 딥스 (의자 딥스)",
+        "category": "bodyweight",
+        "target": "삼두근, 어깨",
+        "difficulty": "초급",
+        "desc": "집에 있는 의자만으로 삼두근을 자극할 수 있는 대표적인 홈트레이닝 동작입니다.",
+        "steps": [
+            "의자 끝에 손을 짚고 엉덩이를 앞으로 뺀다.",
+            "팔꿈치를 굽혀 엉덩이를 아래로 내린다.",
+            "삼두 힘으로 밀어 올려 시작 자세로 돌아온다.",
+        ],
+        "tips": [
+            "어깨가 으쓱 올라가지 않도록 내리는 깊이를 조절한다.",
+            "다리를 펴면 난이도가 올라가고, 굽히면 쉬워진다.",
+        ],
+    },
+    {
+        "id": "superman",
+        "name": "슈퍼맨",
+        "category": "bodyweight",
+        "target": "등, 척추기립근, 둔근",
+        "difficulty": "초급",
+        "desc": "엎드린 자세에서 팔다리를 동시에 들어 등 하부를 강화하는 기본 홈트 동작입니다.",
+        "steps": [
+            "바닥에 엎드려 팔을 앞으로, 다리를 뒤로 뻗는다.",
+            "팔과 다리, 상체를 동시에 바닥에서 들어올린다.",
+            "잠시 유지한 뒤 천천히 내려온다.",
+        ],
+        "tips": [
+            "목을 과도하게 젖히지 않고 시선은 바닥을 향한다.",
+            "허리 통증이 있다면 팔과 다리를 번갈아 드는 방식으로 시작한다.",
+        ],
+    },
+    {
+        "id": "glute-bridge",
+        "name": "힙 브릿지",
+        "category": "bodyweight",
+        "target": "둔근, 햄스트링, 코어",
+        "difficulty": "초급",
+        "desc": "누운 자세에서 엉덩이를 들어올려 둔근을 활성화하는 대표적인 홈트 하체 운동입니다.",
+        "steps": [
+            "바닥에 누워 무릎을 세우고 발을 골반너비로 둔다.",
+            "둔근에 힘을 주며 엉덩이를 천장 방향으로 들어올린다.",
+            "상단에서 잠시 멈췄다가 천천히 내려온다.",
+        ],
+        "tips": [
+            "허리로 밀어올리지 않고 둔근 수축에 집중한다.",
+            "상단에서 1~2초 정지하면 자극이 더 커진다.",
+        ],
+    },
+    {
+        "id": "side-plank",
+        "name": "사이드 플랭크",
+        "category": "bodyweight",
+        "target": "복사근, 옆구리 코어",
+        "difficulty": "초급",
+        "desc": "옆으로 누운 자세로 버텨 옆구리(복사근)를 집중적으로 단련하는 운동입니다.",
+        "steps": [
+            "옆으로 누워 팔꿈치를 어깨 아래에 두고 몸을 지지한다.",
+            "골반을 들어올려 머리부터 발끝까지 일직선을 만든다.",
+            "정해진 시간 동안 유지한 뒤 반대쪽도 반복한다.",
+        ],
+        "tips": [
+            "엉덩이가 아래로 처지지 않도록 옆구리에 힘을 유지한다.",
+            "힘들면 무릎을 굽혀 지지면을 넓혀도 좋다.",
+        ],
+    },
+    {
+        "id": "handstand-pushup",
+        "name": "핸드스탠드 푸시업",
+        "category": "bodyweight",
+        "target": "어깨 전체, 삼두",
+        "difficulty": "고급",
+        "desc": "벽에 기대 물구나무를 선 채로 진행하는 고난도 어깨 맨몸운동입니다.",
+        "steps": [
+            "벽 앞에서 물구나무를 서서 발을 벽에 기댄다.",
+            "팔꿈치를 굽혀 정수리가 바닥에 가까워지도록 내린다.",
+            "어깨 힘으로 밀어 올려 시작 자세로 돌아온다.",
+        ],
+        "tips": [
+            "파이크 푸시업으로 충분히 어깨 힘을 기른 뒤 시도한다.",
+            "목에 무리가 가지 않게 정수리는 살짝만 스치듯 내린다.",
+        ],
+    },
+    {
+        "id": "inverted-row",
+        "name": "인버티드 로우",
+        "category": "bodyweight",
+        "target": "광배근, 승모근, 이두",
+        "difficulty": "중급",
+        "desc": "낮은 봉이나 테이블 아래에서 몸을 당겨 올리는, 풀업이 아직 어려운 사람에게 좋은 등 운동입니다.",
+        "steps": [
+            "낮게 고정된 봉을 잡고 몸을 일직선으로 뻗어 눕듯이 매달린다.",
+            "가슴을 봉 쪽으로 당겨 올린다.",
+            "천천히 팔을 펴며 시작 자세로 돌아온다.",
+        ],
+        "tips": [
+            "발 위치를 몸 쪽으로 가져오면 쉬워지고, 멀리 뻗으면 어려워진다.",
+            "몸이 아래로 처지지 않도록 코어에 힘을 유지한다.",
+        ],
+    },
+    {
+        "id": "calf-raise",
+        "name": "카프레이즈",
+        "category": "bodyweight",
+        "target": "종아리 (비복근)",
+        "difficulty": "초급",
+        "desc": "발뒤꿈치를 들어올려 종아리 근육을 단련하는 간단한 하체 운동입니다.",
+        "steps": [
+            "선 자세에서 발끝으로 서듯 뒤꿈치를 최대한 들어올린다.",
+            "상단에서 잠시 멈춘다.",
+            "천천히 뒤꿈치를 내려 시작 자세로 돌아온다.",
+        ],
+        "tips": [
+            "계단 끝에서 하면 가동범위를 더 늘릴 수 있다.",
+            "균형이 필요하면 벽이나 의자를 살짝 잡고 진행한다.",
+        ],
+    },
+    {
+        "id": "step-up",
+        "name": "스텝업",
+        "category": "bodyweight",
+        "target": "대퇴사두, 둔근",
+        "difficulty": "초급",
+        "desc": "계단이나 의자에 오르내리며 하체를 단련하는 실용적인 홈트 운동입니다.",
+        "steps": [
+            "계단이나 튼튼한 의자 앞에 선다.",
+            "한쪽 발을 올리고 그 다리의 힘으로 몸을 들어올린다.",
+            "반대쪽 발도 올려 완전히 선 뒤, 내려와 반복한다.",
+        ],
+        "tips": [
+            "무릎이 발끝보다 안쪽으로 쏠리지 않게 한다.",
+            "반동 없이 다리 힘만으로 오르도록 한다.",
+        ],
+    },
+    {
+        "id": "leg-raise",
+        "name": "레그레이즈",
+        "category": "bodyweight",
+        "target": "하복부",
+        "difficulty": "중급",
+        "desc": "누운 자세에서 다리를 들어올려 하복부를 집중적으로 자극하는 코어 운동입니다.",
+        "steps": [
+            "바닥에 누워 다리를 편 채로 모은다.",
+            "복부 힘으로 다리를 90도까지 들어올린다.",
+            "천천히 내리되 바닥에 완전히 닿기 전에 멈췄다가 반복한다.",
+        ],
+        "tips": [
+            "허리가 바닥에서 뜨지 않도록 하복부에 힘을 유지한다.",
+            "무릎을 살짝 굽히면 난이도를 낮출 수 있다.",
+        ],
+    },
+    {
+        "id": "high-knees",
+        "name": "하이니",
+        "category": "bodyweight",
+        "target": "전신, 심폐지구력",
+        "difficulty": "초급",
+        "desc": "제자리에서 무릎을 높이 올리며 뛰는 유산소성 전신 운동입니다.",
+        "steps": [
+            "제자리에 선다.",
+            "한쪽 무릎을 허리 높이까지 빠르게 들어올린다.",
+            "발을 내리며 반대쪽 무릎을 빠르게 들어올리는 동작을 반복한다.",
+        ],
+        "tips": [
+            "팔을 함께 흔들면 심박수가 더 올라간다.",
+            "무릎 부담이 있다면 속도를 낮춰 진행한다.",
+        ],
+    },
+    {
+        "id": "dead-bug",
+        "name": "데드버그",
+        "category": "bodyweight",
+        "target": "코어 전체, 척추 안정성",
+        "difficulty": "초급",
+        "desc": "허리에 무리 없이 코어 안정성을 기르는 데 효과적인 전신성 코어 운동입니다.",
+        "steps": [
+            "바닥에 누워 팔은 천장으로, 무릎은 90도로 들어올린다.",
+            "허리를 바닥에 붙인 채 한쪽 팔과 반대쪽 다리를 동시에 뻗는다.",
+            "천천히 시작 자세로 돌아온 뒤 반대쪽도 반복한다.",
+        ],
+        "tips": [
+            "허리가 바닥에서 뜨지 않는 범위까지만 팔다리를 뻗는다.",
+            "천천히, 호흡과 함께 진행하면 효과가 더 좋다.",
+        ],
+    },
+    {
+        "id": "sit-up",
+        "name": "윗몸일으키기",
+        "category": "bodyweight",
+        "target": "복직근, 고관절 굴곡근",
+        "difficulty": "초급",
+        "desc": "상체 전체를 말아 올리는 가장 잘 알려진 기본 복근 운동입니다.",
+        "steps": [
+            "바닥에 누워 무릎을 세우고 손을 가슴에 교차하거나 귀 옆에 둔다.",
+            "복부 힘으로 상체를 완전히 일으켜 세운다.",
+            "천천히 시작 자세로 내려온다.",
+        ],
+        "tips": [
+            "목을 손으로 당기지 않는다.",
+            "허리 통증이 있다면 크런치로 대체하는 것을 고려한다.",
+        ],
+    },
+    # ---- 추가: 기구운동 (가슴/등/하체/어깨/팔 보강) ----
+    {
+        "id": "dumbbell-bench-press",
+        "name": "덤벨 벤치프레스",
+        "category": "equipment",
+        "target": "가슴, 삼두, 어깨",
+        "difficulty": "중급",
+        "desc": "바벨보다 가동범위가 넓어 가슴을 더 깊게 늘려주는 프레스 운동입니다.",
+        "steps": [
+            "벤치에 누워 양손에 덤벨을 들고 가슴 옆에 위치시킨다.",
+            "덤벨을 가슴 위로 밀어 올린다.",
+            "천천히 시작 위치로 내린다.",
+        ],
+        "tips": [
+            "덤벨이 좌우로 흔들리지 않도록 코어를 잡는다.",
+            "내려갈 때 가슴이 충분히 늘어나는 느낌까지 내린다.",
+        ],
+    },
+    {
+        "id": "assisted-pullup",
+        "name": "어시스트 풀업머신",
+        "category": "equipment",
+        "target": "광배근, 이두, 전완",
+        "difficulty": "초급",
+        "desc": "맨몸 턱걸이가 아직 어려운 사람을 위해 보조 중량으로 풀업 동작을 연습하는 머신입니다.",
+        "steps": [
+            "무릎을 패드 위에 올리고 손잡이를 어깨너비보다 넓게 잡는다.",
+            "몸을 끌어올려 턱이 손잡이 높이를 넘도록 한다.",
+            "천천히 팔을 펴며 내려온다.",
+        ],
+        "tips": [
+            "보조 중량이 높을수록 쉬워지므로 점차 중량을 낮춰간다.",
+            "맨몸 턱걸이로 넘어가기 위한 좋은 중간 단계 운동이다.",
+        ],
+    },
+    {
+        "id": "leg-extension",
+        "name": "레그익스텐션",
+        "category": "equipment",
+        "target": "대퇴사두근",
+        "difficulty": "초급",
+        "desc": "앉아서 무릎을 펴는 동작으로 대퇴사두근을 고립시키는 운동입니다.",
+        "steps": [
+            "머신에 앉아 패드를 발목 위에 위치시킨다.",
+            "무릎을 펴며 다리를 들어올린다.",
+            "천천히 시작 자세로 내린다.",
+        ],
+        "tips": [
+            "무릎 관절에 부담이 갈 수 있으니 반동 없이 천천히 진행한다.",
+            "상단에서 잠시 멈추면 자극이 더 커진다.",
+        ],
+    },
+    {
+        "id": "dumbbell-lunge",
+        "name": "덤벨 런지",
+        "category": "equipment",
+        "target": "대퇴사두, 둔근",
+        "difficulty": "중급",
+        "desc": "덤벨을 들고 진행해 맨몸 런지보다 부하를 높인 하체 운동입니다.",
+        "steps": [
+            "양손에 덤벨을 들고 선다.",
+            "한쪽 발을 크게 앞으로 내딛으며 무릎을 굽힌다.",
+            "앞발로 밀어 시작 자세로 돌아온 뒤 반대쪽을 반복한다.",
+        ],
+        "tips": [
+            "상체는 곧게 세운 상태를 유지한다.",
+            "앞 무릎이 발끝을 넘지 않도록 주의한다.",
+        ],
+    },
+    {
+        "id": "back-extension-machine",
+        "name": "백 익스텐션 머신",
+        "category": "equipment",
+        "target": "척추기립근, 둔근, 햄스트링",
+        "difficulty": "초급",
+        "desc": "머신에 고정된 자세로 허리와 둔근을 안전하게 강화하는 운동입니다.",
+        "steps": [
+            "머신에 엎드려 발목을 패드에 고정한다.",
+            "허리와 둔근 힘으로 상체를 들어올려 일직선을 만든다.",
+            "천천히 시작 자세로 내려온다.",
+        ],
+        "tips": [
+            "허리를 과도하게 젖히지 않는다.",
+            "가슴에 웨이트 플레이트를 안고 진행하면 부하를 높일 수 있다.",
+        ],
+    },
+    {
+        "id": "standing-calf-raise-machine",
+        "name": "스탠딩 카프레이즈 머신",
+        "category": "equipment",
+        "target": "종아리 (비복근)",
+        "difficulty": "초급",
+        "desc": "머신의 저항을 이용해 종아리에 더 큰 부하를 줄 수 있는 운동입니다.",
+        "steps": [
+            "머신에 어깨를 패드에 대고 발끝을 발판에 올린다.",
+            "뒤꿈치를 최대한 들어올린다.",
+            "천천히 뒤꿈치를 내려 종아리를 늘린다.",
+        ],
+        "tips": [
+            "가동범위를 최대한 크게 사용한다.",
+            "상단에서 잠시 멈추면 수축감이 더 좋다.",
+        ],
+    },
+    {
+        "id": "dumbbell-shoulder-press",
+        "name": "덤벨 숄더프레스",
+        "category": "equipment",
+        "target": "어깨 전체, 삼두",
+        "difficulty": "중급",
+        "desc": "덤벨을 머리 위로 밀어 올려 어깨 전체를 발달시키는 운동입니다.",
+        "steps": [
+            "앉거나 서서 덤벨을 어깨 높이에 위치시킨다.",
+            "덤벨을 머리 위로 곧게 밀어 올린다.",
+            "천천히 시작 위치로 내린다.",
+        ],
+        "tips": [
+            "허리가 과도하게 꺾이지 않도록 코어에 힘을 준다.",
+            "앉아서 하면 하체 반동을 줄여 어깨에 더 집중할 수 있다.",
+        ],
+    },
+    {
+        "id": "bent-over-rear-delt-raise",
+        "name": "벤트오버 레터럴 레이즈",
+        "category": "equipment",
+        "target": "어깨 (후면삼각근)",
+        "difficulty": "초급",
+        "desc": "상체를 숙인 자세로 덤벨을 들어올려 어깨 후면을 고립시키는 운동입니다.",
+        "steps": [
+            "무릎을 살짝 굽히고 상체를 45도 이상 숙인다.",
+            "덤벨을 든 팔을 옆으로 들어올린다.",
+            "천천히 시작 자세로 내린다.",
+        ],
+        "tips": [
+            "반동 없이 어깨 후면 힘으로만 들어올린다.",
+            "가벼운 중량으로 정확한 자세에 집중한다.",
+        ],
+    },
+    {
+        "id": "reverse-pec-deck-fly",
+        "name": "리버스 펙덱 플라이",
+        "category": "equipment",
+        "target": "어깨 (후면삼각근), 승모근",
+        "difficulty": "초급",
+        "desc": "머신에 앉아 팔을 뒤로 벌려 어깨 후면을 고립시키는 운동입니다.",
+        "steps": [
+            "머신에 가슴을 기대고 앉아 손잡이를 잡는다.",
+            "팔을 뒤로 벌리며 견갑골을 모은다.",
+            "천천히 시작 자세로 돌아온다.",
+        ],
+        "tips": [
+            "팔꿈치를 살짝 굽힌 채 진행한다.",
+            "어깨 후면 수축감에 집중한다.",
+        ],
+    },
+    {
+        "id": "barbell-curl",
+        "name": "바벨컬",
+        "category": "equipment",
+        "target": "이두근",
+        "difficulty": "초급",
+        "desc": "바벨로 양팔을 동시에 훈련해 이두근 전체 볼륨을 키우는 기본 운동입니다.",
+        "steps": [
+            "바벨을 어깨너비로 잡고 선다.",
+            "팔꿈치를 고정한 채 바벨을 어깨 방향으로 들어올린다.",
+            "천천히 시작 자세로 내린다.",
+        ],
+        "tips": [
+            "몸을 뒤로 젖히는 반동을 사용하지 않는다.",
+            "팔꿈치가 앞으로 움직이지 않도록 고정한다.",
+        ],
+    },
+    {
+        "id": "lying-triceps-extension",
+        "name": "라잉 트라이셉스 익스텐션",
+        "category": "equipment",
+        "target": "삼두근",
+        "difficulty": "중급",
+        "desc": "누운 자세에서 바벨이나 EZ바를 이마 쪽으로 내렸다 올려 삼두를 고립시키는 운동입니다.",
+        "steps": [
+            "벤치에 누워 바를 가슴 위로 든다.",
+            "팔꿈치만 굽혀 바를 이마 쪽으로 내린다.",
+            "삼두 힘으로 다시 밀어 올린다.",
+        ],
+        "tips": [
+            "팔꿈치가 벌어지지 않도록 고정한다.",
+            "무거운 중량보다 정확한 궤적을 우선한다.",
+        ],
+    },
 ]
 
 # ---------------------------------------------------------------------------
 # 랜덤 루틴 생성기용 메타데이터
-# muscle_group: 하체 / 가슴 / 등 / 어깨 / 팔 / 코어 / 전신
+# muscle_group: 하체 / 가슴 / 등 / 어깨 / 팔 / 전신 (리스트로 여러 부위 중복 태깅 가능)
 # sets/reps: 생성 시 무작위로 뽑힐 범위
 # bw_mult: {난이도: 체중 대비 권장 중량 배수} - 기구운동에만 존재 (참고용 추정치)
+# equipment_type: "dumbbell"이면 홈트레이닝(맨몸+가벼운 덤벨) 풀에도 포함됨
 # ---------------------------------------------------------------------------
 GENERATOR_META = {
-    "pushup":            {"muscle_group": "가슴", "sets": [3, 4], "reps": [10, 20]},
-    "pullup":            {"muscle_group": "등",   "sets": [3, 4], "reps": [5, 12]},
-    "bodyweight-squat":  {"muscle_group": "하체", "sets": [3, 4], "reps": [15, 25]},
-    "plank":             {"muscle_group": "코어", "sets": [3, 4], "reps": [30, 60], "unit": "초"},
-    "burpee":            {"muscle_group": "전신", "sets": [3, 4], "reps": [10, 20]},
-    "lunge":             {"muscle_group": "하체", "sets": [3, 4], "reps": [10, 16]},
-    "mountain-climber":  {"muscle_group": "코어", "sets": [3, 4], "reps": [20, 40]},
-    "crunch":            {"muscle_group": "코어", "sets": [3, 4], "reps": [15, 25]},
-    "bench-press":       {"muscle_group": "가슴", "sets": [3, 5], "reps": [6, 10],
+    "pushup":            {"muscle_group": ["가슴", "전신"], "sets": [3, 4], "reps": [10, 20]},
+    "pullup":            {"muscle_group": ["등"], "sets": [3, 4], "reps": [5, 12]},
+    "bodyweight-squat":  {"muscle_group": ["하체", "전신"], "sets": [3, 4], "reps": [15, 25]},
+    "plank":             {"muscle_group": ["전신"], "sets": [3, 4], "reps": [30, 60], "unit": "초"},
+    "burpee":            {"muscle_group": ["전신"], "sets": [3, 4], "reps": [10, 20]},
+    "lunge":             {"muscle_group": ["하체", "전신"], "sets": [3, 4], "reps": [10, 16]},
+    "mountain-climber":  {"muscle_group": ["전신"], "sets": [3, 4], "reps": [20, 40]},
+    "crunch":            {"muscle_group": ["전신"], "sets": [3, 4], "reps": [15, 25]},
+    "bench-press":       {"muscle_group": ["가슴"], "sets": [3, 5], "reps": [6, 10],
+                           "bw_mult": {"초급": 0.46, "중급": 0.75, "고급": 1.03}},
+    "squat":             {"muscle_group": ["하체"], "sets": [3, 5], "reps": [5, 8],
+                           "bw_mult": {"초급": 0.69, "중급": 1.09, "고급": 1.55}},
+    "deadlift":          {"muscle_group": ["하체"], "sets": [3, 5], "reps": [4, 6],
+                           "bw_mult": {"초급": 0.81, "중급": 1.21, "고급": 1.73}},
+    "overhead-press":    {"muscle_group": ["어깨"], "sets": [3, 4], "reps": [6, 10],
+                           "bw_mult": {"초급": 0.29, "중급": 0.46, "고급": 0.63}},
+    "lat-pulldown":      {"muscle_group": ["등"], "sets": [3, 4], "reps": [8, 12],
+                           "bw_mult": {"초급": 0.4, "중급": 0.63, "고급": 0.86}},
+    "leg-press":         {"muscle_group": ["하체"], "sets": [3, 4], "reps": [10, 15],
+                           "bw_mult": {"초급": 0.92, "중급": 1.5, "고급": 2.07}},
+    "barbell-row":       {"muscle_group": ["등"], "sets": [3, 4], "reps": [8, 12],
+                           "bw_mult": {"초급": 0.4, "중급": 0.63, "고급": 0.86}},
+    "dumbbell-curl":     {"muscle_group": ["팔"], "sets": [3, 4], "reps": [10, 15], "equipment_type": "dumbbell",
+                           "bw_mult": {"초급": 0.09, "중급": 0.14, "고급": 0.21}},
+    "dips":              {"muscle_group": ["팔"], "sets": [3, 4], "reps": [6, 15]},
+    "jumping-jack":      {"muscle_group": ["전신"], "sets": [3, 4], "reps": [20, 40]},
+    "lateral-raise":     {"muscle_group": ["어깨"], "sets": [3, 4], "reps": [12, 15], "equipment_type": "dumbbell",
+                           "bw_mult": {"초급": 0.05, "중급": 0.08, "고급": 0.12}},
+    "face-pull":         {"muscle_group": ["어깨"], "sets": [3, 4], "reps": [12, 15],
+                           "bw_mult": {"초급": 0.17, "중급": 0.29, "고급": 0.4}},
+    "tricep-pushdown":   {"muscle_group": ["팔"], "sets": [3, 4], "reps": [10, 15],
+                           "bw_mult": {"초급": 0.23, "중급": 0.34, "고급": 0.46}},
+    "hammer-curl":       {"muscle_group": ["팔"], "sets": [3, 4], "reps": [10, 15], "equipment_type": "dumbbell",
+                           "bw_mult": {"초급": 0.09, "중급": 0.14, "고급": 0.21}},
+    "kettlebell-swing":  {"muscle_group": ["전신"], "sets": [3, 4], "reps": [12, 20],
+                           "bw_mult": {"초급": 0.29, "중급": 0.46, "고급": 0.63}},
+    "thruster":          {"muscle_group": ["전신"], "sets": [3, 5], "reps": [6, 10],
+                           "bw_mult": {"초급": 0.34, "중급": 0.57, "고급": 0.81}},
+    "incline-bench-press": {"muscle_group": ["가슴"], "sets": [3, 5], "reps": [6, 10],
+                           "bw_mult": {"초급": 0.4, "중급": 0.63, "고급": 0.92}},
+    "dumbbell-fly":      {"muscle_group": ["가슴"], "sets": [3, 4], "reps": [10, 15], "equipment_type": "dumbbell",
+                           "bw_mult": {"초급": 0.09, "중급": 0.14, "고급": 0.18}},
+    "cable-crossover":   {"muscle_group": ["가슴"], "sets": [3, 4], "reps": [10, 15],
+                           "bw_mult": {"초급": 0.17, "중급": 0.29, "고급": 0.4}},
+    "seated-cable-row":  {"muscle_group": ["등"], "sets": [3, 4], "reps": [8, 12],
+                           "bw_mult": {"초급": 0.46, "중급": 0.69, "고급": 0.92}},
+    "one-arm-dumbbell-row": {"muscle_group": ["등"], "sets": [3, 4], "reps": [8, 12], "equipment_type": "dumbbell",
+                           "bw_mult": {"초급": 0.17, "중급": 0.29, "고급": 0.4}},
+    "back-extension":    {"muscle_group": ["등"], "sets": [3, 4], "reps": [12, 20]},
+    "diamond-pushup":    {"muscle_group": ["팔"], "sets": [3, 4], "reps": [8, 15]},
+    "incline-pushup":    {"muscle_group": ["가슴"], "sets": [3, 4], "reps": [10, 18]},
+    "decline-pushup":    {"muscle_group": ["가슴"], "sets": [3, 4], "reps": [8, 15]},
+    "pike-pushup":       {"muscle_group": ["어깨"], "sets": [3, 4], "reps": [8, 15]},
+    "chair-dip":         {"muscle_group": ["팔"], "sets": [3, 4], "reps": [10, 15]},
+    "superman":          {"muscle_group": ["등"], "sets": [3, 4], "reps": [12, 20]},
+    "glute-bridge":      {"muscle_group": ["하체", "전신"], "sets": [3, 4], "reps": [12, 20]},
+    "side-plank":        {"muscle_group": ["전신"], "sets": [3, 4], "reps": [20, 40], "unit": "초"},
+    "handstand-pushup":  {"muscle_group": ["어깨"], "sets": [3, 4], "reps": [4, 10]},
+    "inverted-row":      {"muscle_group": ["등"], "sets": [3, 4], "reps": [8, 15]},
+    "calf-raise":        {"muscle_group": ["하체"], "sets": [3, 4], "reps": [15, 25]},
+    "step-up":           {"muscle_group": ["하체"], "sets": [3, 4], "reps": [10, 16]},
+    "leg-raise":         {"muscle_group": ["전신"], "sets": [3, 4], "reps": [10, 20]},
+    "high-knees":        {"muscle_group": ["전신"], "sets": [3, 4], "reps": [20, 40]},
+    "dead-bug":          {"muscle_group": ["전신"], "sets": [3, 4], "reps": [10, 16]},
+    "sit-up":            {"muscle_group": ["전신"], "sets": [3, 4], "reps": [15, 25]},
+    # ---- 기구운동 추가 ----
+    "dumbbell-bench-press": {"muscle_group": ["가슴"], "sets": [3, 5], "reps": [6, 12], "equipment_type": "dumbbell",
                            "bw_mult": {"초급": 0.4, "중급": 0.65, "고급": 0.9}},
-    "squat":             {"muscle_group": "하체", "sets": [3, 5], "reps": [5, 8],
-                           "bw_mult": {"초급": 0.6, "중급": 0.95, "고급": 1.35}},
-    "deadlift":          {"muscle_group": "하체", "sets": [3, 5], "reps": [4, 6],
-                           "bw_mult": {"초급": 0.7, "중급": 1.05, "고급": 1.5}},
-    "overhead-press":    {"muscle_group": "어깨", "sets": [3, 4], "reps": [6, 10],
-                           "bw_mult": {"초급": 0.25, "중급": 0.4, "고급": 0.55}},
-    "lat-pulldown":      {"muscle_group": "등",   "sets": [3, 4], "reps": [8, 12],
+    "assisted-pullup":   {"muscle_group": ["등"], "sets": [3, 4], "reps": [5, 10]},
+    "leg-extension":     {"muscle_group": ["하체"], "sets": [3, 4], "reps": [10, 15],
                            "bw_mult": {"초급": 0.35, "중급": 0.55, "고급": 0.75}},
-    "leg-press":         {"muscle_group": "하체", "sets": [3, 4], "reps": [10, 15],
-                           "bw_mult": {"초급": 0.8, "중급": 1.3, "고급": 1.8}},
-    "barbell-row":       {"muscle_group": "등",   "sets": [3, 4], "reps": [8, 12],
-                           "bw_mult": {"초급": 0.35, "중급": 0.55, "고급": 0.75}},
-    "dumbbell-curl":     {"muscle_group": "팔",   "sets": [3, 4], "reps": [10, 15],
-                           "bw_mult": {"초급": 0.08, "중급": 0.12, "고급": 0.18}},
+    "dumbbell-lunge":    {"muscle_group": ["하체"], "sets": [3, 4], "reps": [10, 14], "equipment_type": "dumbbell",
+                           "bw_mult": {"초급": 0.15, "중급": 0.25, "고급": 0.35}},
+    "back-extension-machine": {"muscle_group": ["하체"], "sets": [3, 4], "reps": [12, 20],
+                           "bw_mult": {"초급": 0.1, "중급": 0.2, "고급": 0.3}},
+    "standing-calf-raise-machine": {"muscle_group": ["하체"], "sets": [3, 4], "reps": [12, 20],
+                           "bw_mult": {"초급": 0.5, "중급": 0.8, "고급": 1.1}},
+    "dumbbell-shoulder-press": {"muscle_group": ["어깨"], "sets": [3, 4], "reps": [8, 12], "equipment_type": "dumbbell",
+                           "bw_mult": {"초급": 0.2, "중급": 0.35, "고급": 0.5}},
+    "bent-over-rear-delt-raise": {"muscle_group": ["어깨"], "sets": [3, 4], "reps": [12, 15], "equipment_type": "dumbbell",
+                           "bw_mult": {"초급": 0.04, "중급": 0.07, "고급": 0.1}},
+    "reverse-pec-deck-fly": {"muscle_group": ["어깨"], "sets": [3, 4], "reps": [12, 15],
+                           "bw_mult": {"초급": 0.15, "중급": 0.25, "고급": 0.35}},
+    "barbell-curl":      {"muscle_group": ["팔"], "sets": [3, 4], "reps": [8, 12],
+                           "bw_mult": {"초급": 0.15, "중급": 0.25, "고급": 0.35}},
+    "lying-triceps-extension": {"muscle_group": ["팔"], "sets": [3, 4], "reps": [10, 15],
+                           "bw_mult": {"초급": 0.15, "중급": 0.25, "고급": 0.35}},
 }
-MUSCLE_GROUPS = ["하체", "가슴", "등", "어깨", "팔", "코어", "전신"]
+MUSCLE_GROUPS = ["하체", "가슴", "등", "어깨", "팔", "전신"]
 
 
 def page_shell(title, description, active_nav, body_html, extra_head="", base_path="../"):
@@ -550,13 +1324,28 @@ def page_shell(title, description, active_nav, body_html, extra_head="", base_pa
 def build_exercise_page(ex):
     steps_html = "".join(f"<li>{s}</li>" for s in ex["steps"])
     tips_html = "".join(f"<li>{t}</li>" for t in ex["tips"])
+
+    video_id = VIDEOS.get(ex["id"])
+    video_html = ""
+    if video_id:
+        video_html = f"""
+  <div class="card" style="padding:0; overflow:hidden;">
+    <div style="position:relative; width:100%; padding-top:56.25%;">
+      <iframe src="https://www.youtube.com/embed/{video_id}"
+        style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
+"""
+
     body = f"""
   <p style="font-size:13px; color:var(--text-dim); margin-bottom:4px;">
     <a href="../{ex['category']}.html">{CATEGORY_LABEL[ex['category']]}</a> &gt; {ex['name']}
   </p>
   <h1 style="margin-top:0;">{ex['name']}</h1>
   <p style="color:var(--text-dim); margin-top:-8px; font-size:14px;">{ex['desc']}</p>
-
+{video_html}
   <div class="card">
     <div class="grid-2">
       <div>
@@ -715,11 +1504,12 @@ def build_generator_page():
             "id": ex["id"],
             "name": ex["name"],
             "category": ex["category"],
-            "muscle_group": meta["muscle_group"],
+            "muscle_groups": meta["muscle_group"],
             "sets": meta["sets"],
             "reps": meta["reps"],
             "unit": meta.get("unit", "회"),
             "bw_mult": meta.get("bw_mult"),
+            "equipment_type": meta.get("equipment_type"),
         })
     pool_json = json.dumps(pool, ensure_ascii=False)
     groups_json = json.dumps(MUSCLE_GROUPS, ensure_ascii=False)
@@ -734,13 +1524,19 @@ def build_generator_page():
   <p style="color:var(--text-dim); margin-top:-8px; font-size:14px;">부위와 체중만 넣으면 오늘 할 운동을 바로 만들어드려요.</p>
 
   <div class="card">
+    <label>장소 선택</label>
+    <div id="placeButtons" style="display:flex; gap:8px; margin-bottom:16px;">
+      <button type="button" class="place-btn active" data-place="gym">🏢 헬스장</button>
+      <button type="button" class="place-btn" data-place="home">🏠 홈트레이닝 (맨몸+가벼운 덤벨)</button>
+    </div>
+
     <label>부위 선택 (중복 가능)</label>
     <div id="groupButtons" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
       {group_buttons}
     </div>
 
     <div class="grid-2">
-      <div>
+      <div id="genWeightWrap">
         <label for="genWeight">체중 (kg)</label>
         <input type="number" id="genWeight" inputmode="decimal" placeholder="예: 70">
       </div>
@@ -790,38 +1586,58 @@ def build_generator_page():
     document.querySelectorAll('.group-btn').forEach(btn => {{
       btn.addEventListener('click', () => btn.classList.toggle('active'));
     }});
+    document.querySelectorAll('.place-btn').forEach(btn => {{
+      btn.addEventListener('click', () => {{
+        document.querySelectorAll('.place-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const isHome = btn.dataset.place === 'home';
+        document.getElementById('genWeightWrap').style.display = isHome ? 'none' : 'block';
+      }});
+    }});
   }});
 
   function generateRoutine() {{
     const selected = [...document.querySelectorAll('.group-btn.active')].map(b => b.dataset.group);
+    const place = document.querySelector('.place-btn.active').dataset.place;
     const weight = parseFloat(document.getElementById('genWeight').value);
     const level = document.getElementById('genLevel').value;
     const count = parseInt(document.getElementById('genCount').value);
 
     if (selected.length === 0) {{ alert('부위를 최소 1개 이상 선택해주세요.'); return; }}
-    if (!weight) {{ alert('체중을 입력해주세요.'); return; }}
+    if (place === 'gym' && !weight) {{ alert('체중을 입력해주세요.'); return; }}
 
-    let candidates = EXERCISE_POOL.filter(e => selected.includes(e.muscle_group));
-    if (candidates.length === 0) {{ alert('선택한 부위에 해당하는 운동이 아직 없어요.'); return; }}
+    let candidates = EXERCISE_POOL.filter(e => e.muscle_groups.some(g => selected.includes(g)));
+    if (place === 'home') {{
+      candidates = candidates.filter(e => e.category === 'bodyweight' || e.equipment_type === 'dumbbell');
+    }}
+    if (candidates.length === 0) {{
+      alert(place === 'home'
+        ? '선택한 부위의 홈트레이닝 운동이 아직 없어요. 다른 부위를 선택해보세요.'
+        : '선택한 부위에 해당하는 운동이 아직 없어요.');
+      return;
+    }}
 
     const picked = pickRandom(candidates, Math.min(count, candidates.length));
 
-    let html = '<h3 style="margin-top:0;">오늘의 루틴</h3>';
+    let html = `<h3 style="margin-top:0;">오늘의 루틴 ${{place === 'home' ? '(홈트레이닝)' : '(헬스장)'}}</h3>`;
     picked.forEach(ex => {{
       const sets = randInRange(ex.sets);
       const reps = randInRange(ex.reps);
       let weightLine = '';
-      if (ex.bw_mult) {{
+      if (place === 'gym' && ex.bw_mult) {{
         const mult = ex.bw_mult[level];
         let suggested = weight * mult;
         suggested = Math.round(suggested / 2.5) * 2.5;
         weightLine = `<div style="color:var(--accent-2); font-size:14px; margin-top:2px;">추천 중량 약 ${{suggested}}kg (체중 대비 추정치)</div>`;
       }}
+      if (place === 'home' && ex.equipment_type === 'dumbbell') {{
+        weightLine = `<div style="color:var(--accent-2); font-size:13px; margin-top:2px;">가벼운 덤벨(아령) 사용 · 없다면 물병이나 책 등으로 대체 가능</div>`;
+      }}
       html += `
         <div class="log-entry" style="display:block;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <a href="exercises/${{ex.id}}.html" style="font-weight:700; font-size:15px;">${{ex.name}}</a>
-            <span style="font-size:12px; color:var(--text-dim);">${{ex.muscle_group}}</span>
+            <span style="font-size:12px; color:var(--text-dim);">${{ex.muscle_groups.join('/')}}</span>
           </div>
           <div style="color:var(--text-dim); font-size:14px; margin-top:4px;">${{sets}}세트 x ${{reps}}${{ex.unit}}</div>
           ${{weightLine}}
@@ -834,7 +1650,7 @@ def build_generator_page():
   </script>
 
   <style>
-  .group-btn {{
+  .group-btn, .place-btn {{
     background: var(--surface-2);
     border: 1px solid var(--border);
     color: var(--text-dim);
@@ -843,10 +1659,17 @@ def build_generator_page():
     font-size: 13px;
     cursor: pointer;
   }}
-  .group-btn.active {{
+  .group-btn.active, .place-btn.active {{
     background: var(--accent);
     color: #fff;
     border-color: var(--accent);
+  }}
+  .place-btn {{
+    flex: 1;
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
   }}
   </style>
 """

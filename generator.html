@@ -17,13 +17,19 @@
   <p style="color:var(--text-dim); margin-top:-8px; font-size:14px;">부위와 체중만 넣으면 오늘 할 운동을 바로 만들어드려요.</p>
 
   <div class="card">
+    <label>장소 선택</label>
+    <div id="placeButtons" style="display:flex; gap:8px; margin-bottom:16px;">
+      <button type="button" class="place-btn active" data-place="gym">🏢 헬스장</button>
+      <button type="button" class="place-btn" data-place="home">🏠 홈트레이닝 (맨몸+가벼운 덤벨)</button>
+    </div>
+
     <label>부위 선택 (중복 가능)</label>
     <div id="groupButtons" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
-      <button type="button" class="group-btn" data-group="하체">하체</button><button type="button" class="group-btn" data-group="가슴">가슴</button><button type="button" class="group-btn" data-group="등">등</button><button type="button" class="group-btn" data-group="어깨">어깨</button><button type="button" class="group-btn" data-group="팔">팔</button><button type="button" class="group-btn" data-group="코어">코어</button><button type="button" class="group-btn" data-group="전신">전신</button>
+      <button type="button" class="group-btn" data-group="하체">하체</button><button type="button" class="group-btn" data-group="가슴">가슴</button><button type="button" class="group-btn" data-group="등">등</button><button type="button" class="group-btn" data-group="어깨">어깨</button><button type="button" class="group-btn" data-group="팔">팔</button><button type="button" class="group-btn" data-group="전신">전신</button>
     </div>
 
     <div class="grid-2">
-      <div>
+      <div id="genWeightWrap">
         <label for="genWeight">체중 (kg)</label>
         <input type="number" id="genWeight" inputmode="decimal" placeholder="예: 70">
       </div>
@@ -53,7 +59,7 @@
   </div>
 
   <script>
-  const EXERCISE_POOL = [{"id": "pushup", "name": "푸시업", "category": "bodyweight", "muscle_group": "가슴", "sets": [3, 4], "reps": [10, 20], "unit": "회", "bw_mult": null}, {"id": "pullup", "name": "풀업", "category": "bodyweight", "muscle_group": "등", "sets": [3, 4], "reps": [5, 12], "unit": "회", "bw_mult": null}, {"id": "bodyweight-squat", "name": "맨몸 스쿼트", "category": "bodyweight", "muscle_group": "하체", "sets": [3, 4], "reps": [15, 25], "unit": "회", "bw_mult": null}, {"id": "plank", "name": "플랭크", "category": "bodyweight", "muscle_group": "코어", "sets": [3, 4], "reps": [30, 60], "unit": "초", "bw_mult": null}, {"id": "burpee", "name": "버피", "category": "bodyweight", "muscle_group": "전신", "sets": [3, 4], "reps": [10, 20], "unit": "회", "bw_mult": null}, {"id": "bench-press", "name": "벤치프레스", "category": "equipment", "muscle_group": "가슴", "sets": [3, 5], "reps": [6, 10], "unit": "회", "bw_mult": {"초급": 0.4, "중급": 0.65, "고급": 0.9}}, {"id": "squat", "name": "바벨 스쿼트", "category": "equipment", "muscle_group": "하체", "sets": [3, 5], "reps": [5, 8], "unit": "회", "bw_mult": {"초급": 0.6, "중급": 0.95, "고급": 1.35}}, {"id": "deadlift", "name": "데드리프트", "category": "equipment", "muscle_group": "하체", "sets": [3, 5], "reps": [4, 6], "unit": "회", "bw_mult": {"초급": 0.7, "중급": 1.05, "고급": 1.5}}, {"id": "overhead-press", "name": "오버헤드프레스", "category": "equipment", "muscle_group": "어깨", "sets": [3, 4], "reps": [6, 10], "unit": "회", "bw_mult": {"초급": 0.25, "중급": 0.4, "고급": 0.55}}, {"id": "lat-pulldown", "name": "랫풀다운", "category": "equipment", "muscle_group": "등", "sets": [3, 4], "reps": [8, 12], "unit": "회", "bw_mult": {"초급": 0.35, "중급": 0.55, "고급": 0.75}}, {"id": "leg-press", "name": "레그프레스", "category": "equipment", "muscle_group": "하체", "sets": [3, 4], "reps": [10, 15], "unit": "회", "bw_mult": {"초급": 0.8, "중급": 1.3, "고급": 1.8}}, {"id": "barbell-row", "name": "바벨로우", "category": "equipment", "muscle_group": "등", "sets": [3, 4], "reps": [8, 12], "unit": "회", "bw_mult": {"초급": 0.35, "중급": 0.55, "고급": 0.75}}, {"id": "dumbbell-curl", "name": "덤벨컬", "category": "equipment", "muscle_group": "팔", "sets": [3, 4], "reps": [10, 15], "unit": "회", "bw_mult": {"초급": 0.08, "중급": 0.12, "고급": 0.18}}, {"id": "lunge", "name": "런지", "category": "bodyweight", "muscle_group": "하체", "sets": [3, 4], "reps": [10, 16], "unit": "회", "bw_mult": null}, {"id": "mountain-climber", "name": "마운틴클라이머", "category": "bodyweight", "muscle_group": "코어", "sets": [3, 4], "reps": [20, 40], "unit": "회", "bw_mult": null}, {"id": "crunch", "name": "크런치", "category": "bodyweight", "muscle_group": "코어", "sets": [3, 4], "reps": [15, 25], "unit": "회", "bw_mult": null}];
+  const EXERCISE_POOL = [{"id": "pushup", "name": "푸시업", "category": "bodyweight", "muscle_groups": ["가슴", "전신"], "sets": [3, 4], "reps": [10, 20], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "pullup", "name": "풀업", "category": "bodyweight", "muscle_groups": ["등"], "sets": [3, 4], "reps": [5, 12], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "bodyweight-squat", "name": "맨몸 스쿼트", "category": "bodyweight", "muscle_groups": ["하체", "전신"], "sets": [3, 4], "reps": [15, 25], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "plank", "name": "플랭크", "category": "bodyweight", "muscle_groups": ["전신"], "sets": [3, 4], "reps": [30, 60], "unit": "초", "bw_mult": null, "equipment_type": null}, {"id": "burpee", "name": "버피", "category": "bodyweight", "muscle_groups": ["전신"], "sets": [3, 4], "reps": [10, 20], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "bench-press", "name": "벤치프레스", "category": "equipment", "muscle_groups": ["가슴"], "sets": [3, 5], "reps": [6, 10], "unit": "회", "bw_mult": {"초급": 0.46, "중급": 0.75, "고급": 1.03}, "equipment_type": null}, {"id": "squat", "name": "바벨 스쿼트", "category": "equipment", "muscle_groups": ["하체"], "sets": [3, 5], "reps": [5, 8], "unit": "회", "bw_mult": {"초급": 0.69, "중급": 1.09, "고급": 1.55}, "equipment_type": null}, {"id": "deadlift", "name": "데드리프트", "category": "equipment", "muscle_groups": ["하체"], "sets": [3, 5], "reps": [4, 6], "unit": "회", "bw_mult": {"초급": 0.81, "중급": 1.21, "고급": 1.73}, "equipment_type": null}, {"id": "overhead-press", "name": "오버헤드프레스", "category": "equipment", "muscle_groups": ["어깨"], "sets": [3, 4], "reps": [6, 10], "unit": "회", "bw_mult": {"초급": 0.29, "중급": 0.46, "고급": 0.63}, "equipment_type": null}, {"id": "lat-pulldown", "name": "랫풀다운", "category": "equipment", "muscle_groups": ["등"], "sets": [3, 4], "reps": [8, 12], "unit": "회", "bw_mult": {"초급": 0.4, "중급": 0.63, "고급": 0.86}, "equipment_type": null}, {"id": "leg-press", "name": "레그프레스", "category": "equipment", "muscle_groups": ["하체"], "sets": [3, 4], "reps": [10, 15], "unit": "회", "bw_mult": {"초급": 0.92, "중급": 1.5, "고급": 2.07}, "equipment_type": null}, {"id": "barbell-row", "name": "바벨로우", "category": "equipment", "muscle_groups": ["등"], "sets": [3, 4], "reps": [8, 12], "unit": "회", "bw_mult": {"초급": 0.4, "중급": 0.63, "고급": 0.86}, "equipment_type": null}, {"id": "dumbbell-curl", "name": "덤벨컬", "category": "equipment", "muscle_groups": ["팔"], "sets": [3, 4], "reps": [10, 15], "unit": "회", "bw_mult": {"초급": 0.09, "중급": 0.14, "고급": 0.21}, "equipment_type": "dumbbell"}, {"id": "lunge", "name": "런지", "category": "bodyweight", "muscle_groups": ["하체", "전신"], "sets": [3, 4], "reps": [10, 16], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "mountain-climber", "name": "마운틴클라이머", "category": "bodyweight", "muscle_groups": ["전신"], "sets": [3, 4], "reps": [20, 40], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "crunch", "name": "크런치", "category": "bodyweight", "muscle_groups": ["전신"], "sets": [3, 4], "reps": [15, 25], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "dips", "name": "딥스", "category": "bodyweight", "muscle_groups": ["팔"], "sets": [3, 4], "reps": [6, 15], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "jumping-jack", "name": "점핑잭", "category": "bodyweight", "muscle_groups": ["전신"], "sets": [3, 4], "reps": [20, 40], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "lateral-raise", "name": "사이드 레터럴 레이즈", "category": "equipment", "muscle_groups": ["어깨"], "sets": [3, 4], "reps": [12, 15], "unit": "회", "bw_mult": {"초급": 0.05, "중급": 0.08, "고급": 0.12}, "equipment_type": "dumbbell"}, {"id": "face-pull", "name": "페이스풀", "category": "equipment", "muscle_groups": ["어깨"], "sets": [3, 4], "reps": [12, 15], "unit": "회", "bw_mult": {"초급": 0.17, "중급": 0.29, "고급": 0.4}, "equipment_type": null}, {"id": "tricep-pushdown", "name": "케이블 트라이셉스 푸시다운", "category": "equipment", "muscle_groups": ["팔"], "sets": [3, 4], "reps": [10, 15], "unit": "회", "bw_mult": {"초급": 0.23, "중급": 0.34, "고급": 0.46}, "equipment_type": null}, {"id": "hammer-curl", "name": "해머컬", "category": "equipment", "muscle_groups": ["팔"], "sets": [3, 4], "reps": [10, 15], "unit": "회", "bw_mult": {"초급": 0.09, "중급": 0.14, "고급": 0.21}, "equipment_type": "dumbbell"}, {"id": "kettlebell-swing", "name": "케틀벨 스윙", "category": "equipment", "muscle_groups": ["전신"], "sets": [3, 4], "reps": [12, 20], "unit": "회", "bw_mult": {"초급": 0.29, "중급": 0.46, "고급": 0.63}, "equipment_type": null}, {"id": "thruster", "name": "스러스터", "category": "equipment", "muscle_groups": ["전신"], "sets": [3, 5], "reps": [6, 10], "unit": "회", "bw_mult": {"초급": 0.34, "중급": 0.57, "고급": 0.81}, "equipment_type": null}, {"id": "incline-bench-press", "name": "인클라인 벤치프레스", "category": "equipment", "muscle_groups": ["가슴"], "sets": [3, 5], "reps": [6, 10], "unit": "회", "bw_mult": {"초급": 0.4, "중급": 0.63, "고급": 0.92}, "equipment_type": null}, {"id": "dumbbell-fly", "name": "덤벨 플라이", "category": "equipment", "muscle_groups": ["가슴"], "sets": [3, 4], "reps": [10, 15], "unit": "회", "bw_mult": {"초급": 0.09, "중급": 0.14, "고급": 0.18}, "equipment_type": "dumbbell"}, {"id": "cable-crossover", "name": "케이블 크로스오버", "category": "equipment", "muscle_groups": ["가슴"], "sets": [3, 4], "reps": [10, 15], "unit": "회", "bw_mult": {"초급": 0.17, "중급": 0.29, "고급": 0.4}, "equipment_type": null}, {"id": "seated-cable-row", "name": "시티드 케이블 로우", "category": "equipment", "muscle_groups": ["등"], "sets": [3, 4], "reps": [8, 12], "unit": "회", "bw_mult": {"초급": 0.46, "중급": 0.69, "고급": 0.92}, "equipment_type": null}, {"id": "one-arm-dumbbell-row", "name": "원암 덤벨로우", "category": "equipment", "muscle_groups": ["등"], "sets": [3, 4], "reps": [8, 12], "unit": "회", "bw_mult": {"초급": 0.17, "중급": 0.29, "고급": 0.4}, "equipment_type": "dumbbell"}, {"id": "back-extension", "name": "백 익스텐션", "category": "bodyweight", "muscle_groups": ["등"], "sets": [3, 4], "reps": [12, 20], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "diamond-pushup", "name": "다이아몬드 푸시업", "category": "bodyweight", "muscle_groups": ["팔"], "sets": [3, 4], "reps": [8, 15], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "incline-pushup", "name": "인클라인 푸시업", "category": "bodyweight", "muscle_groups": ["가슴"], "sets": [3, 4], "reps": [10, 18], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "decline-pushup", "name": "디클라인 푸시업", "category": "bodyweight", "muscle_groups": ["가슴"], "sets": [3, 4], "reps": [8, 15], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "pike-pushup", "name": "파이크 푸시업", "category": "bodyweight", "muscle_groups": ["어깨"], "sets": [3, 4], "reps": [8, 15], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "chair-dip", "name": "체어 딥스 (의자 딥스)", "category": "bodyweight", "muscle_groups": ["팔"], "sets": [3, 4], "reps": [10, 15], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "superman", "name": "슈퍼맨", "category": "bodyweight", "muscle_groups": ["등"], "sets": [3, 4], "reps": [12, 20], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "glute-bridge", "name": "힙 브릿지", "category": "bodyweight", "muscle_groups": ["하체", "전신"], "sets": [3, 4], "reps": [12, 20], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "side-plank", "name": "사이드 플랭크", "category": "bodyweight", "muscle_groups": ["전신"], "sets": [3, 4], "reps": [20, 40], "unit": "초", "bw_mult": null, "equipment_type": null}, {"id": "handstand-pushup", "name": "핸드스탠드 푸시업", "category": "bodyweight", "muscle_groups": ["어깨"], "sets": [3, 4], "reps": [4, 10], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "inverted-row", "name": "인버티드 로우", "category": "bodyweight", "muscle_groups": ["등"], "sets": [3, 4], "reps": [8, 15], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "calf-raise", "name": "카프레이즈", "category": "bodyweight", "muscle_groups": ["하체"], "sets": [3, 4], "reps": [15, 25], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "step-up", "name": "스텝업", "category": "bodyweight", "muscle_groups": ["하체"], "sets": [3, 4], "reps": [10, 16], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "leg-raise", "name": "레그레이즈", "category": "bodyweight", "muscle_groups": ["전신"], "sets": [3, 4], "reps": [10, 20], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "high-knees", "name": "하이니", "category": "bodyweight", "muscle_groups": ["전신"], "sets": [3, 4], "reps": [20, 40], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "dead-bug", "name": "데드버그", "category": "bodyweight", "muscle_groups": ["전신"], "sets": [3, 4], "reps": [10, 16], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "sit-up", "name": "윗몸일으키기", "category": "bodyweight", "muscle_groups": ["전신"], "sets": [3, 4], "reps": [15, 25], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "dumbbell-bench-press", "name": "덤벨 벤치프레스", "category": "equipment", "muscle_groups": ["가슴"], "sets": [3, 5], "reps": [6, 12], "unit": "회", "bw_mult": {"초급": 0.4, "중급": 0.65, "고급": 0.9}, "equipment_type": "dumbbell"}, {"id": "assisted-pullup", "name": "어시스트 풀업머신", "category": "equipment", "muscle_groups": ["등"], "sets": [3, 4], "reps": [5, 10], "unit": "회", "bw_mult": null, "equipment_type": null}, {"id": "leg-extension", "name": "레그익스텐션", "category": "equipment", "muscle_groups": ["하체"], "sets": [3, 4], "reps": [10, 15], "unit": "회", "bw_mult": {"초급": 0.35, "중급": 0.55, "고급": 0.75}, "equipment_type": null}, {"id": "dumbbell-lunge", "name": "덤벨 런지", "category": "equipment", "muscle_groups": ["하체"], "sets": [3, 4], "reps": [10, 14], "unit": "회", "bw_mult": {"초급": 0.15, "중급": 0.25, "고급": 0.35}, "equipment_type": "dumbbell"}, {"id": "back-extension-machine", "name": "백 익스텐션 머신", "category": "equipment", "muscle_groups": ["하체"], "sets": [3, 4], "reps": [12, 20], "unit": "회", "bw_mult": {"초급": 0.1, "중급": 0.2, "고급": 0.3}, "equipment_type": null}, {"id": "standing-calf-raise-machine", "name": "스탠딩 카프레이즈 머신", "category": "equipment", "muscle_groups": ["하체"], "sets": [3, 4], "reps": [12, 20], "unit": "회", "bw_mult": {"초급": 0.5, "중급": 0.8, "고급": 1.1}, "equipment_type": null}, {"id": "dumbbell-shoulder-press", "name": "덤벨 숄더프레스", "category": "equipment", "muscle_groups": ["어깨"], "sets": [3, 4], "reps": [8, 12], "unit": "회", "bw_mult": {"초급": 0.2, "중급": 0.35, "고급": 0.5}, "equipment_type": "dumbbell"}, {"id": "bent-over-rear-delt-raise", "name": "벤트오버 레터럴 레이즈", "category": "equipment", "muscle_groups": ["어깨"], "sets": [3, 4], "reps": [12, 15], "unit": "회", "bw_mult": {"초급": 0.04, "중급": 0.07, "고급": 0.1}, "equipment_type": "dumbbell"}, {"id": "reverse-pec-deck-fly", "name": "리버스 펙덱 플라이", "category": "equipment", "muscle_groups": ["어깨"], "sets": [3, 4], "reps": [12, 15], "unit": "회", "bw_mult": {"초급": 0.15, "중급": 0.25, "고급": 0.35}, "equipment_type": null}, {"id": "barbell-curl", "name": "바벨컬", "category": "equipment", "muscle_groups": ["팔"], "sets": [3, 4], "reps": [8, 12], "unit": "회", "bw_mult": {"초급": 0.15, "중급": 0.25, "고급": 0.35}, "equipment_type": null}, {"id": "lying-triceps-extension", "name": "라잉 트라이셉스 익스텐션", "category": "equipment", "muscle_groups": ["팔"], "sets": [3, 4], "reps": [10, 15], "unit": "회", "bw_mult": {"초급": 0.15, "중급": 0.25, "고급": 0.35}, "equipment_type": null}];
 
   function pickRandom(arr, n) {
     const copy = [...arr];
@@ -73,38 +79,58 @@
     document.querySelectorAll('.group-btn').forEach(btn => {
       btn.addEventListener('click', () => btn.classList.toggle('active'));
     });
+    document.querySelectorAll('.place-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.place-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const isHome = btn.dataset.place === 'home';
+        document.getElementById('genWeightWrap').style.display = isHome ? 'none' : 'block';
+      });
+    });
   });
 
   function generateRoutine() {
     const selected = [...document.querySelectorAll('.group-btn.active')].map(b => b.dataset.group);
+    const place = document.querySelector('.place-btn.active').dataset.place;
     const weight = parseFloat(document.getElementById('genWeight').value);
     const level = document.getElementById('genLevel').value;
     const count = parseInt(document.getElementById('genCount').value);
 
     if (selected.length === 0) { alert('부위를 최소 1개 이상 선택해주세요.'); return; }
-    if (!weight) { alert('체중을 입력해주세요.'); return; }
+    if (place === 'gym' && !weight) { alert('체중을 입력해주세요.'); return; }
 
-    let candidates = EXERCISE_POOL.filter(e => selected.includes(e.muscle_group));
-    if (candidates.length === 0) { alert('선택한 부위에 해당하는 운동이 아직 없어요.'); return; }
+    let candidates = EXERCISE_POOL.filter(e => e.muscle_groups.some(g => selected.includes(g)));
+    if (place === 'home') {
+      candidates = candidates.filter(e => e.category === 'bodyweight' || e.equipment_type === 'dumbbell');
+    }
+    if (candidates.length === 0) {
+      alert(place === 'home'
+        ? '선택한 부위의 홈트레이닝 운동이 아직 없어요. 다른 부위를 선택해보세요.'
+        : '선택한 부위에 해당하는 운동이 아직 없어요.');
+      return;
+    }
 
     const picked = pickRandom(candidates, Math.min(count, candidates.length));
 
-    let html = '<h3 style="margin-top:0;">오늘의 루틴</h3>';
+    let html = `<h3 style="margin-top:0;">오늘의 루틴 ${place === 'home' ? '(홈트레이닝)' : '(헬스장)'}</h3>`;
     picked.forEach(ex => {
       const sets = randInRange(ex.sets);
       const reps = randInRange(ex.reps);
       let weightLine = '';
-      if (ex.bw_mult) {
+      if (place === 'gym' && ex.bw_mult) {
         const mult = ex.bw_mult[level];
         let suggested = weight * mult;
         suggested = Math.round(suggested / 2.5) * 2.5;
         weightLine = `<div style="color:var(--accent-2); font-size:14px; margin-top:2px;">추천 중량 약 ${suggested}kg (체중 대비 추정치)</div>`;
       }
+      if (place === 'home' && ex.equipment_type === 'dumbbell') {
+        weightLine = `<div style="color:var(--accent-2); font-size:13px; margin-top:2px;">가벼운 덤벨(아령) 사용 · 없다면 물병이나 책 등으로 대체 가능</div>`;
+      }
       html += `
         <div class="log-entry" style="display:block;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <a href="exercises/${ex.id}.html" style="font-weight:700; font-size:15px;">${ex.name}</a>
-            <span style="font-size:12px; color:var(--text-dim);">${ex.muscle_group}</span>
+            <span style="font-size:12px; color:var(--text-dim);">${ex.muscle_groups.join('/')}</span>
           </div>
           <div style="color:var(--text-dim); font-size:14px; margin-top:4px;">${sets}세트 x ${reps}${ex.unit}</div>
           ${weightLine}
@@ -117,7 +143,7 @@
   </script>
 
   <style>
-  .group-btn {
+  .group-btn, .place-btn {
     background: var(--surface-2);
     border: 1px solid var(--border);
     color: var(--text-dim);
@@ -126,10 +152,17 @@
     font-size: 13px;
     cursor: pointer;
   }
-  .group-btn.active {
+  .group-btn.active, .place-btn.active {
     background: var(--accent);
     color: #fff;
     border-color: var(--accent);
+  }
+  .place-btn {
+    flex: 1;
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
   }
   </style>
 
