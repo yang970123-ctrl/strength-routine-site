@@ -1606,7 +1606,12 @@ def build_generator_page():
     if (selected.length === 0) {{ alert('부위를 최소 1개 이상 선택해주세요.'); return; }}
     if (place === 'gym' && !weight) {{ alert('체중을 입력해주세요.'); return; }}
 
-    let candidates = EXERCISE_POOL.filter(e => e.muscle_groups.some(g => selected.includes(g)));
+    let effectiveGroups = [...selected];
+    if (place === 'home' && ['가슴', '등', '어깨'].some(g => selected.includes(g)) && !effectiveGroups.includes('팔')) {{
+      effectiveGroups.push('팔');
+    }}
+
+    let candidates = EXERCISE_POOL.filter(e => e.muscle_groups.some(g => effectiveGroups.includes(g)));
     if (place === 'home') {{
       candidates = candidates.filter(e => e.category === 'bodyweight' || e.equipment_type === 'dumbbell');
     }}
