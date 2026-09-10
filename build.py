@@ -1659,6 +1659,31 @@ def build_generator_page():
     <button class="btn secondary" onclick="generateRoutine(true)">다시 뽑기 (같은 조건)</button>
   </div>
 
+  <div class="card">
+    <h3 style="margin-top:0;">왜 랜덤으로 뽑을까</h3>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      운동을 꾸준히 못 하는 가장 큰 이유 중 하나는 "오늘 뭘 해야 할지
+      정하는 것" 자체가 진입장벽이 되기 때문이다. 프로그램을 처음부터
+      끝까지 설계하려면 지식도 필요하고 시간도 든다. 이 생성기는 그
+      결정을 대신 내려줘서, 고민하는 시간을 줄이고 바로 몸을 움직이게
+      만드는 데 목적이 있다.
+    </p>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      추천 중량은 체중과 부위별 평균적인 체중 대비 배수를 곱해 계산한
+      추정치다. 개인의 관절 구조, 훈련 경력, 유연성에 따라 실제로 들 수
+      있는 무게는 차이가 날 수 있으니, 처음 몇 번은 추천 중량보다 가볍게
+      시작해서 자세를 확인한 뒤 점차 맞춰가는 것을 권장한다.
+    </p>
+    <h3 style="margin-top:20px;">실전 팁</h3>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      실제로 해보면 매번 같은 부위만 계속 고르게 되는 경우가 많은데,
+      의도적으로 다른 부위도 섞어서 골고루 자극하는 게 장기적으로 더
+      균형 잡힌 몸을 만든다. 자주 하는 실수는 뽑힌 루틴을 그대로 무시하고
+      익숙한 운동만 하는 것인데, 낯선 종목이 뽑혔을 때 오히려 새로운
+      자극을 준다는 걸 기억하자.
+    </p>
+  </div>
+
   <script>
   const EXERCISE_POOL = {pool_json};
 
@@ -1778,6 +1803,40 @@ def build_generator_page():
         f.write(html)
 
 
+SPLIT_TIPS = {
+    "none": """
+      무분할은 매번 전신을 자극하기 때문에 하루 훈련 볼륨이 상대적으로
+      적어야 다음 훈련일까지 회복이 된다. 실제로 해보면 종목당 세트 수를
+      욕심내서 늘리다가 다음 훈련일에 피로가 안 풀린 채로 시작하는 경우가
+      많은데, 자주 하는 실수는 이런 상태에서도 무게를 그대로 유지하려는
+      것이다. 컨디션이 안 좋은 날은 무게보다 자세에 집중하는 게 낫다.
+""",
+    "2way": """
+      2분할은 상체/하체처럼 부위를 크게 나누기 때문에, 한 부위를 주 2회
+      자극하면서도 회복 시간을 충분히 확보할 수 있다는 게 장점이다.
+      실전에서는 상체-하체-휴식-상체-하체-휴식처럼 이틀 훈련 후 하루
+      쉬는 패턴이 무난하다. 자주 하는 실수는 하체 날을 상체 날보다
+      가볍게 여기는 것인데, 하체는 관여 근육량이 커서 오히려 회복에
+      시간이 더 걸린다는 점을 감안해야 한다.
+""",
+    "3way": """
+      3분할(Push/Pull/Legs)은 헬스장에서 가장 널리 쓰이는 구성 중 하나로,
+      미는 근육과 당기는 근육을 분리해서 같은 날 같이 피로해지는 근육이
+      겹치지 않도록 설계됐다. 실제로 해보면 Push 날 다음날 Pull을 해도
+      크게 무리가 없다는 걸 느낄 수 있다. 자주 하는 실수는 Legs 날을
+      건너뛰는 것인데, 하체를 빼먹으면 상하체 불균형이 빠르게 심해진다.
+""",
+    "4way": """
+      4분할은 부위를 세분화하는 만큼 각 부위의 회복 시간을 가장 길게
+      확보할 수 있어 중급자 이상에게 적합하다. 다만 주 4회 이상 꾸준히
+      갈 수 있어야 효과를 보는 구성이라, 실전에서는 일정이 불규칙하다면
+      오히려 한 부위가 일주일 넘게 방치되는 역효과가 날 수 있다. 자주
+      하는 실수는 이 구조를 초보자 때부터 따라 하는 것인데, 회복 능력이
+      아직 부족한 상태에서는 2~3분할이 더 안전하다.
+""",
+}
+
+
 def build_split_page(split_id, split):
     exercise_ids = {e["id"] for e in EXERCISES}
     exercise_names = {e["id"]: e["name"] for e in EXERCISES}
@@ -1800,6 +1859,8 @@ def build_split_page(split_id, split):
     </table>
   </div>"""
 
+    tip_html = SPLIT_TIPS.get(split_id, "")
+
     body = f"""
   <p style="font-size:13px; color:var(--text-dim); margin-bottom:4px;">
     <a href="../splits.html">분할법</a> &gt; {split['label']}
@@ -1807,6 +1868,10 @@ def build_split_page(split_id, split):
   <h1 style="margin-top:0;">{split['label']}</h1>
   <p style="color:var(--text-dim); margin-top:-8px; font-size:14px;">{split['intro']}</p>
   {day_cards}
+  <div class="card">
+    <h3 style="margin-top:0;">실전 팁</h3>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">{tip_html}</p>
+  </div>
 """
     html = page_shell(
         title=f"{split['label']} 루틴 - 오늘의 근력루틴",
