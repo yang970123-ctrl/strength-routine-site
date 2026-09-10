@@ -39,6 +39,35 @@
     </div>
   </div>
 
+  <div class="card">
+    <h3 style="margin-top:0;">왜 MET 방식으로 계산할까</h3>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      MET(대사당량)는 가만히 앉아있을 때를 1로 놓고, 특정 활동이 그것의 몇 배
+      에너지를 쓰는지를 나타낸 지표다. 예를 들어 MET 8인 농구는 안정 시보다
+      8배 많은 에너지를 쓴다는 뜻이다. 이 방식이 널리 쓰이는 이유는 체중이
+      다른 두 사람이 같은 운동을 해도 소모 칼로리가 다르다는 걸 반영할 수
+      있기 때문이다 — 몸이 무거울수록 같은 동작에도 더 많은 에너지가 든다.
+    </p>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      계산식은 "MET × 체중(kg) × 시간(h)"이 기본이며, 여기에 개인차를 보정하는
+      계수를 살짝 곱해서 실제 소모량에 더 가깝게 만든다. 다만 MET 값 자체가
+      "보통 강도로 했을 때"를 기준으로 하기 때문에, 실제로 얼마나 열심히
+      했는지에 따라 오차가 발생할 수 있다는 점은 감안해야 한다.
+    </p>
+    <h3 style="margin-top:20px;">실전 팁</h3>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      실제로 해보면 같은 종목이라도 강도에 따라 칼로리 소모가 크게 달라진다.
+      예를 들어 "여유롭게 수영"과 "빠르게 수영"은 MET 값 자체가 다르므로,
+      가능하면 본인의 실제 운동 강도에 가까운 항목을 고르는 게 정확도를
+      높이는 방법이다. 자주 하는 실수는 운동 시간에 쉬는 시간까지 포함해서
+      계산하는 것인데, 실제 움직인 시간만 넣어야 과대 추정을 피할 수 있다.
+    </p>
+  </div>
+
+  <p style="color:var(--text-dim); font-size:13px; margin-top:16px;">
+    오늘 태운 칼로리만큼 <a href="food-calories.html" style="color:var(--accent-2);">무엇을 먹을 수 있는지</a> 궁금하다면 음식 칼로리 사전도 확인해보자.
+  </p>
+
   <script>
   function calcSportsCalorie() {
     const met = parseFloat(document.getElementById('sport').value);

@@ -1394,14 +1394,47 @@ def build_category_page(category):
       <div class="desc">{e['target']} · {e['difficulty']}</div>
     </a>""" for e in items)
 
+    if category == "bodyweight":
+        intro = """
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      맨몸운동은 체중 자체를 저항으로 쓰기 때문에 장비나 헬스장 없이도
+      바로 시작할 수 있다는 게 가장 큰 장점이다. 초보자에게는 관절에
+      부담이 적은 좋은 입문 단계가 되고, 숙련자에게는 각도나 지지면을
+      바꾸는 것만으로 난이도를 얼마든지 높일 수 있는 유연한 도구가 된다.
+    </p>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      다만 기구운동과 달리 무게를 세밀하게 조절하기 어렵기 때문에,
+      반복수나 자세 난이도(예: 무릎 대고 하는 푸시업 → 일반 푸시업 →
+      디클라인 푸시업)로 강도를 조절하는 방식에 익숙해지는 게 좋다.
+    </p>
+"""
+    else:
+        intro = """
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      기구운동은 바벨, 덤벨, 머신을 이용해 무게를 세밀하게 조절할 수 있다는
+      점에서 근력을 체계적으로 늘려가기에 유리하다. 특히 스쿼트·벤치프레스·
+      데드리프트 같은 복합 운동은 여러 근육을 동시에 자극해서 훈련 효율이
+      높고, 머신 운동은 특정 부위를 안전하게 고립시켜 마무리 운동으로 쓰기 좋다.
+    </p>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      처음이라면 프리웨이트(바벨·덤벨)보다 머신으로 자세를 먼저 익히고,
+      점차 프리웨이트 비중을 늘려가는 순서를 추천한다. 프리웨이트는
+      자유도가 높은 만큼 잘못된 자세가 그대로 부상으로 이어지기 쉽기 때문이다.
+    </p>
+"""
+
     body = f"""
   <h1 style="margin-top:0;">{label}</h1>
   <p style="color:var(--text-dim); margin-top:-8px; font-size:14px;">
     {"장비 없이 어디서나 할 수 있는 운동 모음" if category == "bodyweight" else "바벨·머신 등 기구를 활용하는 운동 모음"}
   </p>
+  <div class="card">{intro}</div>
   <div class="home-grid">
     {tiles}
   </div>
+  <p style="color:var(--text-dim); font-size:13px; margin-top:16px;">
+    어떤 운동을 조합해야 할지 모르겠다면 <a href="generator.html" style="color:var(--accent-2);">랜덤 루틴 생성기</a>로 바로 시작해볼 수 있다.
+  </p>
 """
     html = page_shell(
         title=f"{label} 가이드 - 오늘의 근력루틴",
@@ -1428,6 +1461,38 @@ def build_food_page():
       {rows}
     </table>
   </div>
+
+  <div class="card">
+    <h3 style="margin-top:0;">왜 "대략적인" 칼로리일까</h3>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      같은 흰쌀밥 한 공기라도 밥그릇 크기, 찰기, 조리 방식에 따라 실제 중량이
+      꽤 차이 난다. 그래서 이 표의 숫자는 정밀 측정값이 아니라, 표준 성인
+      1인분 기준으로 자주 인용되는 평균값에 가깝다. 정확한 다이어트 관리가
+      필요하다면 이 표는 대략적인 감을 잡는 용도로 쓰고, 실제 섭취량은
+      저울로 재는 것이 가장 정확하다.
+    </p>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      또 하나 알아두면 좋은 점은, 같은 식재료라도 조리법에 따라 칼로리가
+      크게 달라진다는 것이다. 예를 들어 닭가슴살은 삶으면 이 표의 수치에
+      가깝지만, 튀기거나 기름에 구우면 기름 흡수량만큼 칼로리가 크게
+      늘어난다. 그래서 "무엇을 먹는지"만큼 "어떻게 조리하는지"도 칼로리
+      관리에서 중요하다.
+    </p>
+    <h3 style="margin-top:20px;">실전 팁</h3>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      실제로 해보면 하루 섭취 칼로리를 계산할 때 액체류(음료, 소스)를
+      빼먹는 경우가 많다. 아메리카노처럼 칼로리가 낮은 음료도 있지만,
+      라떼나 가당 음료는 은근히 칼로리가 높으니 함께 계산하는 습관을
+      들이는 게 좋다. 자주 하는 실수는 한 끼 식단표만 보고 하루 전체를
+      판단하는 것인데, 실제로는 간식과 음료까지 더한 하루 총량으로
+      봐야 정확하다.
+    </p>
+  </div>
+
+  <p style="color:var(--text-dim); font-size:13px; margin-top:16px;">
+    내 하루 소모 칼로리가 궁금하다면 <a href="bmr-calculator.html" style="color:var(--accent-2);">기초대사량 계산기</a>를,
+    운동으로 얼마나 태울 수 있는지는 <a href="sports-calories.html" style="color:var(--accent-2);">운동별 칼로리 소모 계산기</a>를 확인해보자.
+  </p>
 """
     html = page_shell(
         title="음식 칼로리 사전 - 오늘의 근력루틴",
@@ -1468,6 +1533,35 @@ def build_sports_page():
       <div class="stat-label">예상 소모 칼로리 (kcal)</div>
     </div>
   </div>
+
+  <div class="card">
+    <h3 style="margin-top:0;">왜 MET 방식으로 계산할까</h3>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      MET(대사당량)는 가만히 앉아있을 때를 1로 놓고, 특정 활동이 그것의 몇 배
+      에너지를 쓰는지를 나타낸 지표다. 예를 들어 MET 8인 농구는 안정 시보다
+      8배 많은 에너지를 쓴다는 뜻이다. 이 방식이 널리 쓰이는 이유는 체중이
+      다른 두 사람이 같은 운동을 해도 소모 칼로리가 다르다는 걸 반영할 수
+      있기 때문이다 — 몸이 무거울수록 같은 동작에도 더 많은 에너지가 든다.
+    </p>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      계산식은 "MET × 체중(kg) × 시간(h)"이 기본이며, 여기에 개인차를 보정하는
+      계수를 살짝 곱해서 실제 소모량에 더 가깝게 만든다. 다만 MET 값 자체가
+      "보통 강도로 했을 때"를 기준으로 하기 때문에, 실제로 얼마나 열심히
+      했는지에 따라 오차가 발생할 수 있다는 점은 감안해야 한다.
+    </p>
+    <h3 style="margin-top:20px;">실전 팁</h3>
+    <p style="color:var(--text-dim); font-size:14px; line-height:1.7;">
+      실제로 해보면 같은 종목이라도 강도에 따라 칼로리 소모가 크게 달라진다.
+      예를 들어 "여유롭게 수영"과 "빠르게 수영"은 MET 값 자체가 다르므로,
+      가능하면 본인의 실제 운동 강도에 가까운 항목을 고르는 게 정확도를
+      높이는 방법이다. 자주 하는 실수는 운동 시간에 쉬는 시간까지 포함해서
+      계산하는 것인데, 실제 움직인 시간만 넣어야 과대 추정을 피할 수 있다.
+    </p>
+  </div>
+
+  <p style="color:var(--text-dim); font-size:13px; margin-top:16px;">
+    오늘 태운 칼로리만큼 <a href="food-calories.html" style="color:var(--accent-2);">무엇을 먹을 수 있는지</a> 궁금하다면 음식 칼로리 사전도 확인해보자.
+  </p>
 
   <script>
   function calcSportsCalorie() {{
@@ -1606,12 +1700,7 @@ def build_generator_page():
     if (selected.length === 0) {{ alert('부위를 최소 1개 이상 선택해주세요.'); return; }}
     if (place === 'gym' && !weight) {{ alert('체중을 입력해주세요.'); return; }}
 
-    let effectiveGroups = [...selected];
-    if (place === 'home' && ['가슴', '등', '어깨'].some(g => selected.includes(g)) && !effectiveGroups.includes('팔')) {{
-      effectiveGroups.push('팔');
-    }}
-
-    let candidates = EXERCISE_POOL.filter(e => e.muscle_groups.some(g => effectiveGroups.includes(g)));
+    let candidates = EXERCISE_POOL.filter(e => e.muscle_groups.some(g => selected.includes(g)));
     if (place === 'home') {{
       candidates = candidates.filter(e => e.category === 'bodyweight' || e.equipment_type === 'dumbbell');
     }}
